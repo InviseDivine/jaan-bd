@@ -1,0 +1,20 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.0/Modules/CPack.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CPackComponent.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindOpenGL.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/GNUInstallDirs.cmake
+C:/Program Files/CMake/share/cmake-4.0/Templates/CPackConfig.cmake.in
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/CompileDefinitions.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/GlfwImport.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/InstallConfigurations.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/JoinPaths.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/LibraryConfigurations.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/LibraryPathToLinkerFlags.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/PackConfigurations.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/PopulateConfigVariablesLocally.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/raylib-config-version.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/cmake/raylib-config.cmake
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/raylib.pc.in
+E:/!Myprojects/naa-bdd/build/_deps/raylib-src/src/CMakeLists.txt

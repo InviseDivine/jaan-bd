@@ -1,0 +1,11 @@
+================================================================================
+Linker Errors
+Generated: 2026-10-05T12:14:42.930Z
+Total Errors: 2
+================================================================================
+
+[LNK2019] (MSVC)
+ссылка на неразрешенный внешний символ _main в функции "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ). [E:\!Myprojects\naa-bdd\build\jaanbd-server.vcxproj]
+
+[LNK1120] (MSVC)
+неразрешенных внешних элементов: 1 [E:\!Myprojects\naa-bdd\build\jaanbd-server.vcxproj]

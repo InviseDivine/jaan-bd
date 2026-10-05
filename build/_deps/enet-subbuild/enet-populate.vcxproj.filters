@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\72cffe1856eefb606c635b56041d7ec8\enet-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\72cffe1856eefb606c635b56041d7ec8\enet-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\72cffe1856eefb606c635b56041d7ec8\enet-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\72cffe1856eefb606c635b56041d7ec8\enet-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\72cffe1856eefb606c635b56041d7ec8\enet-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\72cffe1856eefb606c635b56041d7ec8\enet-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\72cffe1856eefb606c635b56041d7ec8\enet-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\72cffe1856eefb606c635b56041d7ec8\enet-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\6be47146c16847a156632f1ac3255b3f\enet-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\05c58d68cd1f3d823879460e76f7b0df\enet-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="E:\!Myprojects\naa-bdd\build\_deps\enet-subbuild\CMakeFiles\enet-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{23A53902-EC61-37D2-A796-EBF411CB3269}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

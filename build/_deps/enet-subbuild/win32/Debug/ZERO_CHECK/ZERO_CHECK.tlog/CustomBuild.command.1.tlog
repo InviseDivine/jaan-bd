@@ -1,0 +1,10 @@
+^E:\!MYPROJECTS\NAA-BDD\BUILD\_DEPS\ENET-SUBBUILD\CMAKEFILES\05C58D68CD1F3D823879460E76F7B0DF\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/!Myprojects/naa-bdd/build/_deps/enet-subbuild -BE:/!Myprojects/naa-bdd/build/_deps/enet-subbuild --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/enet-populate.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

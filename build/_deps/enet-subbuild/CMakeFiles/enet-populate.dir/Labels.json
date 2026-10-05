@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/enet-populate"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/05c58d68cd1f3d823879460e76f7b0df/enet-populate.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/6be47146c16847a156632f1ac3255b3f/enet-populate-complete.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/72cffe1856eefb606c635b56041d7ec8/enet-populate-build.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/72cffe1856eefb606c635b56041d7ec8/enet-populate-configure.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/72cffe1856eefb606c635b56041d7ec8/enet-populate-download.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/72cffe1856eefb606c635b56041d7ec8/enet-populate-install.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/72cffe1856eefb606c635b56041d7ec8/enet-populate-mkdir.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/72cffe1856eefb606c635b56041d7ec8/enet-populate-patch.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/72cffe1856eefb606c635b56041d7ec8/enet-populate-test.rule"
+		},
+		{
+			"file" : "E:/!Myprojects/naa-bdd/build/_deps/enet-subbuild/CMakeFiles/72cffe1856eefb606c635b56041d7ec8/enet-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"enet-populate"
+		],
+		"name" : "enet-populate"
+	}
+}
