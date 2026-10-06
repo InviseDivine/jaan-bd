@@ -632,7 +632,7 @@ void DrawTMXLayer(tmx_map *map, tmx_layer *layer, int posX, int posY, Color tint
  */
 void DrawTMXLayers(tmx_map *map, tmx_layer *layers, int posX, int posY, Color tint, float scale) {
     do {
-		if (layers->visible) DrawTMXLayer(map, layers, posX, posY, tint, scale);
+		if (layers->visible) DrawTMXLayer(map, layers, posX, posY, ColorTint(ColorFromTMX(layers->tintcolor), tint), scale);
 	} while ((layers = layers->next));
 }
 

@@ -80,6 +80,8 @@ void Multiplayer::update() {
 
                 enet_peer_reset(m_peer);
 
+                Game::get().removeAllRemotePlayers();
+
                 break;
             }
  
