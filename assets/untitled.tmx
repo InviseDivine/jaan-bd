@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="7">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="9">
  <tileset firstgid="1" name="blocks" tilewidth="16" tileheight="16" tilecount="256" columns="16">
   <image source="blocks.png" trans="55ffff" width="256" height="256"/>
  </tileset>
@@ -262,6 +262,11 @@
  <objectgroup id="14" name="objects">
   <object id="2" name="spawnpoint" x="482.076" y="249.773">
    <point/>
+  </object>
+  <object id="8" name="123" x="503.636" y="70.0236" width="58" height="10.008">
+   <properties>
+    <property name="transition" value="house"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

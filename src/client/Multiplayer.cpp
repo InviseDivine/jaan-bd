@@ -130,6 +130,13 @@ void Multiplayer::handlePacket(ENetPacket* packet) {
             
             break;
         }
+        
+        case Header::SEND_MESSAGE: {
+            SendMessagePacket* pack = (SendMessagePacket*)packet->data;
+            game.addMessage(pack->message);
+            
+            break;
+        };
     }
 }
 

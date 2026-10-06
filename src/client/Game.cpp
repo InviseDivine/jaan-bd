@@ -304,9 +304,10 @@ Vector2 Game::findSpawn(tmx_map* map) {
 
 void UpdateCollisionInteracts(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
     if (collision.type == COLLISION_RECT) {
+        
         if (CheckCollisionRecs(*(Rectangle*)userdata, collision.rect)) {
             auto trans = tmx_get_property(object->properties, "transition");
-
+            
             if (trans != nullptr) {
                 TraceLog(LOG_INFO, "Transition!");
                 return Game::get().changeMap(trans->value.string);

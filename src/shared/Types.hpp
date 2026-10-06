@@ -9,7 +9,8 @@ enum class Header : char {
     UPDATE_PLAYER,
     ADD_REMOTE_PLAYER,
     REMOVE_REMOTE_PLAYER,
-    UPDATE_REMOTE_PLAYER
+    UPDATE_REMOTE_PLAYER,
+    SEND_MESSAGE
 };
 
 struct PlayerState {
@@ -47,6 +48,11 @@ struct UpdateRemotePlayerPacket {
     Header header = Header::UPDATE_REMOTE_PLAYER;
     unsigned int id;
     PlayerState state;
+};
+
+struct SendMessagePacket {
+    Header header = Header::SEND_MESSAGE;
+    char message[1024];
 };
 
 #pragma pack(pop) 

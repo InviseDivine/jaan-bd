@@ -18,11 +18,12 @@ void Player::onTick() {
     if (IsKeyDown(KEY_A)) m_speed.x -= 1;
     if (IsKeyDown(KEY_D)) m_speed.x += 1;
 
-
     m_bounds.x += m_speed.x * 0.7f;
+    game.checkInteracts(m_bounds);
     m_bounds.x = game.verifyCollisionX(m_bounds, m_speed.x);
 
     m_bounds.y += m_speed.y * 0.7f;
+    game.checkInteracts(m_bounds);
     m_bounds.y = game.verifyCollisionY(m_bounds, m_speed.y);
 
     game.checkInteracts(m_bounds);

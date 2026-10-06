@@ -1,6 +1,7 @@
 #include "Client.hpp"
 #include <Server.hpp>
 #include <Types.hpp>
+#include <format>
 
 void Client::packetReceived(ENetPacket* packet) {
     auto& srv = Server::get();
@@ -27,6 +28,20 @@ void Client::packetReceived(ENetPacket* packet) {
             };
 
             srv.broadcast((char*)&updPacket, sizeof(updPacket), this);
+            break;
+        }
+
+        case Header::SEND_MESSAGE: {
+            SendMessagePacket* pack = reinterpret_cast<SendMessagePacket*>(packet->data);
+            
+            std::string message = std::format("<{}> {}", m_username, pack->message);
+
+            SendMessagePacket broadcastMessage;
+
+            std::copy(message.begin(), message.end(), broadcastMessage.message);
+            
+            srv.broadcast((char*)&broadcastMessage, sizeof(broadcastMessage), this);
+
             break;
         }
     }

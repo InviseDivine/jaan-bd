@@ -4,6 +4,8 @@
 #include <Types.hpp>
 #include <raylib.h>
 #include "tmx.h"
+#include <vector>
+#include <string>
 
 class RemotePlayer;
 class Entity;
@@ -18,6 +20,8 @@ private:
     tmx_map* m_map;
 
     Game() = default;
+
+    std::vector<std::string> m_messages;
 public:
     Game(Game&&) = delete;
 
@@ -48,4 +52,6 @@ public:
     void changeMap(std::string const& name);
     tmx_map* currentMap() { return m_map; }
     
+
+    void addMessage(std::string message) { m_messages.push_back(message); }
 };
