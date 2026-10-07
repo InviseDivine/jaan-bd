@@ -56,7 +56,7 @@ void Player::onTick() {
     auto map = game.currentMap();
 
     Vector2 mapSize = {
-        (float)map->width * map->tile_width,  (float)map->height * map->tile_height
+        (float)map->width * map->tileWidth,  (float)map->height * map->tileHeight
     };
 
     if (m_bounds.x + m_bounds.width > mapSize.x) m_bounds.x = mapSize.x - m_bounds.width;

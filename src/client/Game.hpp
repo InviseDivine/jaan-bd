@@ -3,7 +3,7 @@
 #include <string>
 #include <Types.hpp>
 #include <raylib.h>
-#include "tmx.h"
+#include "raytmx.h"
 #include <vector>
 #include <string>
 
@@ -14,10 +14,10 @@ class Player;
 class Game {
 private:
     std::unordered_map<unsigned int, RemotePlayer*> m_remotes;
-    std::unordered_map<std::string, tmx_map*> m_maps;
+    std::unordered_map<std::string, TmxMap*> m_maps;
     Player* m_player;
 
-    tmx_map* m_map;
+    TmxMap* m_map;
 
     Game() = default;
 
@@ -43,14 +43,14 @@ public:
 
     void checkInteracts(Rectangle bounds);
 
-    Vector2 findSpawn(tmx_map* map);
+    Vector2 findSpawn(TmxMap* map);
 
 
     bool loadMap(std::string const& name);
-    tmx_map* findMap(std::string const& name);
+    TmxMap* findMap(std::string const& name);
     
     void changeMap(std::string const& name);
-    tmx_map* currentMap() { return m_map; }
+    TmxMap* currentMap() { return m_map; }
     
 
     void addMessage(std::string message) { m_messages.push_back(message); }

@@ -33,11 +33,8 @@ CPMAddPackage(
 )
 CPMAddPackage(
     NAME "tmx"
-    GIT_REPOSITORY "https://github.com/baylej/tmx"
-    GIT_TAG "tmx_1.10.1"
-    OPTIONS
-        "ZLIB_INCLUDE_DIR ${zlib_SOURCE_DIR}"
-        "ZLIB_LIBRARY zlib"
+    GIT_REPOSITORY "https://github.com/luphi/raytmx"
+    GIT_TAG "main"
 )
 
 file(GLOB Client
@@ -60,6 +57,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/src/client
     ${CMAKE_SOURCE_DIR}/src/shared
     ${enet_SOURCE_DIR}
+    ${tmx_SOURCE_DIR}
 )
 
 target_link_libraries(${PROJECT_NAME}-server PUBLIC enet_static)

@@ -6,51 +6,51 @@
 #include <Timer.hpp>
 #include <algorithm>
 
-#define RAYLIB_TMX_IMPLEMENTATION
-#include "raylib-tmx.h"
+#define RAYTMX_IMPLEMENTATION
+#include "raytmx.h"
 
 #include <RemotePlayer.hpp>
 #include <Multiplayer.hpp>
 
-void DrawCollisons(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
-    // Vector2* position = (Vector2*)userdata;
-    switch (collision.type)
-    {
-        case COLLISION_RECT: {
-            Color color = object->obj_type == OT_TILE ? RED : BLUE;
-            // collision.rect.x += position->x;
-            // collision.rect.y += position->y;
-            DrawRectangleLinesEx(collision.rect, 0.3f, color);
-        } break;
-        case COLLISION_POINT: {
-            // collision.point.x += position->x;
-            // collision.point.y += position->y;
-            int centerX = (int)(collision.point.x + object->width / 2.0);
-            int centerY = (int)(collision.point.y + object->height / 2.0);
-            DrawCircle(centerX, centerY, 5.0f, YELLOW);
-        } break;
-        // case COLLISION_POLYGON:
-        // case COLLISION_POLYLINE: {
-        //     double** points = collision.polygon.points;
-        //     int count       = collision.polygon.count;
-        //     double offset_x = object->x + position->x;
-        //     double offset_y = object->y + position->y;
-        //     if (object->obj_type == OT_POLYGON) {
-        //         DrawTMXPolygon(offset_x, offset_y, points, count, ORANGE);
-        //     }
-        //     if (object->obj_type == OT_POLYLINE) {
-        //         DrawTMXPolyline(offset_x, offset_y, points, count, PURPLE);
-        //     }
-        // } break;
-        // case COLLISION_ELLIPSE: {
-        //     int centerX   = (int)(collision.rect.x + position->x);
-        //     int centerY   = (int)(collision.rect.y + position->y);
-        //     float radiusH = (float)(collision.rect.width);
-        //     float radiusV = (float)(collision.rect.height);
-        //     DrawEllipseLines(centerX, centerY, radiusH, radiusV, GREEN);
-        // } break;
-    }
-}
+// void DrawCollisons(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
+//     // Vector2* position = (Vector2*)userdata;
+//     switch (collision.type)
+//     {
+//         case COLLISION_RECT: {
+//             Color color = object->obj_type == OT_TILE ? RED : BLUE;
+//             // collision.rect.x += position->x;
+//             // collision.rect.y += position->y;
+//             DrawRectangleLinesEx(collision.rect, 0.3f, color);
+//         } break;
+//         case COLLISION_POINT: {
+//             // collision.point.x += position->x;
+//             // collision.point.y += position->y;
+//             int centerX = (int)(collision.point.x + object->width / 2.0);
+//             int centerY = (int)(collision.point.y + object->height / 2.0);
+//             DrawCircle(centerX, centerY, 5.0f, YELLOW);
+//         } break;
+//         // case COLLISION_POLYGON:
+//         // case COLLISION_POLYLINE: {
+//         //     double** points = collision.polygon.points;
+//         //     int count       = collision.polygon.count;
+//         //     double offset_x = object->x + position->x;
+//         //     double offset_y = object->y + position->y;
+//         //     if (object->obj_type == OT_POLYGON) {
+//         //         DrawTMXPolygon(offset_x, offset_y, points, count, ORANGE);
+//         //     }
+//         //     if (object->obj_type == OT_POLYLINE) {
+//         //         DrawTMXPolyline(offset_x, offset_y, points, count, PURPLE);
+//         //     }
+//         // } break;
+//         // case COLLISION_ELLIPSE: {
+//         //     int centerX   = (int)(collision.rect.x + position->x);
+//         //     int centerY   = (int)(collision.rect.y + position->y);
+//         //     float radiusH = (float)(collision.rect.width);
+//         //     float radiusV = (float)(collision.rect.height);
+//         //     DrawEllipseLines(centerX, centerY, radiusH, radiusV, GREEN);
+//         // } break;
+//     }
+// }
 
 bool Game::loadMap(std::string const& name) {
     auto filename = "assets/" + name + ".tmx";
@@ -62,7 +62,7 @@ bool Game::loadMap(std::string const& name) {
     return true;
 }
 
-tmx_map* Game::findMap(std::string const& name) {
+TmxMap* Game::findMap(std::string const& name) {
     auto it = m_maps.find(name);
 
     if (it != m_maps.end()) {
@@ -95,7 +95,7 @@ void Game::run() {
         .zoom = 5.f
     };
 
-    TraceLog(LOG_INFO, "Map size in pixels %ix%i", m_map->tile_width * m_map->width, m_map->tile_height * m_map->height);
+    TraceLog(LOG_INFO, "Map size in pixels %ix%i", m_map->tileWidth * m_map->width, m_map->tileHeight * m_map->height);
 
     std::string username;
     if(FileExists("username.txt")) {
@@ -122,9 +122,6 @@ void Game::run() {
         m_player->setPoisition(findSpawn(m_map)); // near bed
     }
 
-    tmx_layer* layer = tmx_find_layer_by_name(m_map, "Collidable");
-    if (layer) layer->visible = false;
-
     while(!WindowShouldClose()) {
         timer.advanceTime();
 
@@ -139,8 +136,8 @@ void Game::run() {
         };
 
         Vector2 max = {
-            m_map->tile_width * (m_map->width - 1) - (cam.offset.x / cam.zoom),
-            m_map->tile_height * (m_map->height - 1) - (cam.offset.y / cam.zoom)
+            m_map->tileWidth * (m_map->width - 1) - (cam.offset.x / cam.zoom),
+            m_map->tileHeight * (m_map->height - 1) - (cam.offset.y / cam.zoom)
         };
 
         if (min.x < max.x && min.y < max.y) {
@@ -150,8 +147,8 @@ void Game::run() {
             };
         } else {
             cam.target = {
-                (float)m_map->tile_width * (m_map->width - 1) / 2,
-                (float)m_map->tile_height * (m_map->height - 1) / 2
+                (float)m_map->tileWidth * (m_map->width - 1) / 2,
+                (float)m_map->tileHeight * (m_map->height - 1) / 2
             };
         }
 
@@ -177,7 +174,7 @@ void Game::run() {
         BeginDrawing();
         ClearBackground(BLACK);
             BeginMode2D(cam);
-                DrawTMX(m_map, m_map->tile_width, m_map->tile_width, WHITE, 1.0f);
+                DrawTMX(m_map, m_map->tileWidth, m_map->tile_width, WHITE, 1.0f);
                 
                 for (auto pl : players) pl->draw();
 
@@ -241,7 +238,7 @@ struct Collider {
     float speed;
 };
 
-void UpdateCollisionX(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
+void UpdateCollisionX(TmxObject *object, TmxColl collision, void* userdata) {
     Collider* collider = (Collider*)userdata;
     
     if (collision.type == COLLISION_RECT) {
