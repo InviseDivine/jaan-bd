@@ -39,6 +39,7 @@ CPMAddPackage(
 
 file(GLOB Client
     ${CMAKE_SOURCE_DIR}/src/client/*.cpp
+    ${tmx_SOURCE_DIR}
 )
 
 file(GLOB Server
@@ -52,12 +53,14 @@ file(GLOB Shared
 add_executable(${PROJECT_NAME} ${Client} ${Shared})
 add_executable(${PROJECT_NAME}-server ${Server} ${Shared})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC raylib enet_static tmx)
+target_link_libraries(${PROJECT_NAME} PUBLIC raylib enet_static)
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/src/client
     ${CMAKE_SOURCE_DIR}/src/shared
     ${enet_SOURCE_DIR}
     ${tmx_SOURCE_DIR}
+    ${tmx_SOURCE_DIR}/external
+
 )
 
 target_link_libraries(${PROJECT_NAME}-server PUBLIC enet_static)

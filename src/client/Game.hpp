@@ -3,10 +3,9 @@
 #include <string>
 #include <Types.hpp>
 #include <raylib.h>
-#include "raytmx.h"
 #include <vector>
 #include <string>
-
+#include "raytmx.h"
 class RemotePlayer;
 class Entity;
 class Player;
@@ -38,12 +37,12 @@ public:
     void removeAllRemotePlayers();
 
     // do not like this i just have no time
-    float verifyCollisionX(Rectangle bounds, float speedX);
-    float verifyCollisionY(Rectangle bounds, float speedY);
+    // float verifyCollisionX(Rectangle bounds, float speedX);
+    // float verifyCollisionY(Rectangle bounds, float speedY);
 
-    void checkInteracts(Rectangle bounds);
+    // void checkInteracts(Rectangle bounds);
 
-    Vector2 findSpawn(TmxMap* map);
+    // Vector2 findSpawn(TmxMap* map);
 
 
     bool loadMap(std::string const& name);

@@ -1,13 +1,9 @@
 #include "Game.hpp"
-
 #include <raylib.h>
 #include <fstream>
 #include <Player.hpp>
 #include <Timer.hpp>
 #include <algorithm>
-
-#define RAYTMX_IMPLEMENTATION
-#include "raytmx.h"
 
 #include <RemotePlayer.hpp>
 #include <Multiplayer.hpp>
@@ -73,10 +69,10 @@ TmxMap* Game::findMap(std::string const& name) {
 }
 
 void Game::changeMap(std::string const& name) {
-    auto map = findMap(name);
+    // auto map = findMap(name);
 
-    m_map = map;
-    m_player->setPoisition(findSpawn(map));
+    // m_map = map;
+    // m_player->setPoisition(findSpawn(map));
 }
 
 void Game::run() {
@@ -119,7 +115,7 @@ void Game::run() {
     Timer timer(60.f);
 
     if (m_map) {
-        m_player->setPoisition(findSpawn(m_map)); // near bed
+        // m_player->setPoisition(findSpawn(m_map)); // near bed
     }
 
     while(!WindowShouldClose()) {
@@ -174,11 +170,11 @@ void Game::run() {
         BeginDrawing();
         ClearBackground(BLACK);
             BeginMode2D(cam);
-                DrawTMX(m_map, m_map->tileWidth, m_map->tile_width, WHITE, 1.0f);
+                DrawTMX(m_map, &cam, nullptr, 0, 0, WHITE);
                 
                 for (auto pl : players) pl->draw();
 
-                CollisionsTMXForeach(m_map, DrawCollisons, NULL);
+                // CollisionsTMXForeach(m_map, DrawCollisons, NULL);
                 DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
 
@@ -233,86 +229,86 @@ void Game::removeAllRemotePlayers() {
     m_remotes.clear();
 }
 
-struct Collider {
-    Rectangle bounds;
-    float speed;
-};
+// struct Collider {
+//     Rectangle bounds;
+//     float speed;
+// };
 
-void UpdateCollisionX(TmxObject *object, TmxColl collision, void* userdata) {
-    Collider* collider = (Collider*)userdata;
+// void UpdateCollisionX(TmxObject *object, TmxColl collision, void* userdata) {
+//     Collider* collider = (Collider*)userdata;
     
-    if (collision.type == COLLISION_RECT) {
-        if (CheckCollisionRecs(collider->bounds, collision.rect)) {
-            if (collider->speed > 0)
-                collider->bounds.x = collision.rect.x - collider->bounds.width;
-            else if (collider->speed < 0)
-                collider->bounds.x = collision.rect.x + collision.rect.width;
-        }
-    }
-}
+//     if (collision.type == COLLISION_RECT) {
+//         if (CheckCollisionRecs(collider->bounds, collision.rect)) {
+//             if (collider->speed > 0)
+//                 collider->bounds.x = collision.rect.x - collider->bounds.width;
+//             else if (collider->speed < 0)
+//                 collider->bounds.x = collision.rect.x + collision.rect.width;
+//         }
+//     }
+// }
 
-void UpdateCollisionY(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
-    Collider* collider = (Collider*)userdata;
+// void UpdateCollisionY(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
+//     Collider* collider = (Collider*)userdata;
 
-    if (collision.type == COLLISION_RECT) {
-        if (CheckCollisionRecs(collider->bounds, collision.rect)) {
-            if (collider->speed > 0)
-                collider->bounds.y = collision.rect.y - collider->bounds.height;
-            else if (collider->speed < 0)
-                collider->bounds.y = collision.rect.y + collision.rect.height;
-        }
-    }
-}
+//     if (collision.type == COLLISION_RECT) {
+//         if (CheckCollisionRecs(collider->bounds, collision.rect)) {
+//             if (collider->speed > 0)
+//                 collider->bounds.y = collision.rect.y - collider->bounds.height;
+//             else if (collider->speed < 0)
+//                 collider->bounds.y = collision.rect.y + collision.rect.height;
+//         }
+//     }
+// }
 
-float Game::verifyCollisionX(Rectangle bounds, float speedX) {
-    Collider coll = {bounds, speedX};
+// float Game::verifyCollisionX(Rectangle bounds, float speedX) {
+//     Collider coll = {bounds, speedX};
 
-    CollisionsTMXForeach(m_map, UpdateCollisionX, &coll);
+//     CollisionsTMXForeach(m_map, UpdateCollisionX, &coll);
 
-    return coll.bounds.x;
-}
+//     return coll.bounds.x;
+// }
 
-float Game::verifyCollisionY(Rectangle bounds, float speedY) {
-    Collider coll = {bounds, speedY};
+// float Game::verifyCollisionY(Rectangle bounds, float speedY) {
+//     Collider coll = {bounds, speedY};
 
-    CollisionsTMXForeach(m_map, UpdateCollisionY, &coll);
+//     CollisionsTMXForeach(m_map, UpdateCollisionY, &coll);
 
-    return coll.bounds.y;
-}
+//     return coll.bounds.y;
+// }
 
-Vector2 Game::findSpawn(tmx_map* map) {
-    std::string objname = "spawnpoint";
+// Vector2 Game::findSpawn(tmx_map* map) {
+//     std::string objname = "spawnpoint";
 
-    auto objects = tmx_find_layer_by_name(map, "objects");
+//     auto objects = tmx_find_layer_by_name(map, "objects");
 
-    if (!objects) return Vector2();
+//     if (!objects) return Vector2();
 
-    auto obj = objects->content.objgr->head;
-    while (obj) {
-        if (obj->name && std::string(obj->name) == objname) {
-            return Vector2(obj->x, obj->y);
-        }
+//     auto obj = objects->content.objgr->head;
+//     while (obj) {
+//         if (obj->name && std::string(obj->name) == objname) {
+//             return Vector2(obj->x, obj->y);
+//         }
 
-        obj = obj->next;
-    }
+//         obj = obj->next;
+//     }
 
-    return Vector2();
-}
+//     return Vector2();
+// }
 
-void UpdateCollisionInteracts(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
-    if (collision.type == COLLISION_RECT) {
+// void UpdateCollisionInteracts(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
+//     if (collision.type == COLLISION_RECT) {
         
-        if (CheckCollisionRecs(*(Rectangle*)userdata, collision.rect)) {
-            auto trans = tmx_get_property(object->properties, "transition");
+//         if (CheckCollisionRecs(*(Rectangle*)userdata, collision.rect)) {
+//             auto trans = tmx_get_property(object->properties, "transition");
             
-            if (trans != nullptr) {
-                TraceLog(LOG_INFO, "Transition!");
-                return Game::get().changeMap(trans->value.string);
-            }
-        }
-    }
-}
+//             if (trans != nullptr) {
+//                 TraceLog(LOG_INFO, "Transition!");
+//                 return Game::get().changeMap(trans->value.string);
+//             }
+//         }
+//     }
+// }
 
-void Game::checkInteracts(Rectangle bounds) {
-    CollisionsTMXForeach(m_map, UpdateCollisionInteracts, &bounds);
-}
+// void Game::checkInteracts(Rectangle bounds) {
+//     CollisionsTMXForeach(m_map, UpdateCollisionInteracts, &bounds);
+// }
