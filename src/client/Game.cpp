@@ -82,7 +82,7 @@ void Game::run() {
     loadMap("untitled");
     loadMap("house");
 
-    m_map = findMap("house");
+    m_map = findMap("untitled");
 
     Camera2D cam{
         .offset = Vector2{1280/2, 720/2},
@@ -141,7 +141,7 @@ void Game::run() {
                 std::clamp(position.x, min.x, max.x),
                 std::clamp(position.y, min.x, max.y)
             };
-        } else {
+        } else {    
             cam.target = {
                 (float)m_map->tileWidth * (m_map->width - 1) / 2,
                 (float)m_map->tileHeight * (m_map->height - 1) / 2
@@ -166,6 +166,7 @@ void Game::run() {
                 });
             }
         }
+
 
         BeginDrawing();
         ClearBackground(BLACK);
@@ -229,10 +230,10 @@ void Game::removeAllRemotePlayers() {
     m_remotes.clear();
 }
 
-// struct Collider {
-//     Rectangle bounds;
-//     float speed;
-// };
+struct Collider {
+    Rectangle bounds;
+    float speed;
+};
 
 // void UpdateCollisionX(TmxObject *object, TmxColl collision, void* userdata) {
 //     Collider* collider = (Collider*)userdata;
@@ -247,7 +248,7 @@ void Game::removeAllRemotePlayers() {
 //     }
 // }
 
-// void UpdateCollisionY(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
+// void UpdateCollisionY(TmxObject *object, RaylibTMXCollision collision, void* userdata) {
 //     Collider* collider = (Collider*)userdata;
 
 //     if (collision.type == COLLISION_RECT) {
@@ -260,21 +261,29 @@ void Game::removeAllRemotePlayers() {
 //     }
 // }
 
-// float Game::verifyCollisionX(Rectangle bounds, float speedX) {
-//     Collider coll = {bounds, speedX};
+float Game::verifyCollisionX(Rectangle bounds, float speedX) {
+    TmxObject collided;
+    if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, bounds, &collided)) {
+        if (speedX > 0)
+            bounds.x = collided.aabb.x - bounds.width;
+        else if (speedX < 0)
+            bounds.x = collided.aabb.x + collided.aabb.width;
+    }
 
-//     CollisionsTMXForeach(m_map, UpdateCollisionX, &coll);
+    return bounds.x;
+}
 
-//     return coll.bounds.x;
-// }
-
-// float Game::verifyCollisionY(Rectangle bounds, float speedY) {
-//     Collider coll = {bounds, speedY};
-
-//     CollisionsTMXForeach(m_map, UpdateCollisionY, &coll);
-
-//     return coll.bounds.y;
-// }
+float Game::verifyCollisionY(Rectangle bounds, float speedY) {
+    TmxObject collided;
+    if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, bounds, &collided)) {
+        if (speedY > 0)
+            bounds.y = collided.aabb.y - bounds.height;
+        else if (speedY < 0)
+            bounds.y = collided.aabb.y + bounds.height;
+    }
+    
+    return bounds.y;
+}
 
 // Vector2 Game::findSpawn(tmx_map* map) {
 //     std::string objname = "spawnpoint";
@@ -307,8 +316,4 @@ void Game::removeAllRemotePlayers() {
 //             }
 //         }
 //     }
-// }
-
-// void Game::checkInteracts(Rectangle bounds) {
-//     CollisionsTMXForeach(m_map, UpdateCollisionInteracts, &bounds);
 // }

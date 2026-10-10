@@ -37,8 +37,8 @@ public:
     void removeAllRemotePlayers();
 
     // do not like this i just have no time
-    // float verifyCollisionX(Rectangle bounds, float speedX);
-    // float verifyCollisionY(Rectangle bounds, float speedY);
+    float verifyCollisionX(Rectangle bounds, float speedX);
+    float verifyCollisionY(Rectangle bounds, float speedY);
 
     // void checkInteracts(Rectangle bounds);
 
