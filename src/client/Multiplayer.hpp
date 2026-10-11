@@ -21,6 +21,8 @@ public:
 
     int getReconnects() const { return m_reconnects; }
     bool connected() const { return m_connected; }
+
+    void mapChanged(std::string const& to);
 private:
     ENetHost* m_client;
     ENetPeer* m_peer;

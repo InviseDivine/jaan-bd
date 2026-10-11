@@ -12,6 +12,8 @@ private:
 
     PlayerState m_state;
 
+    std::string m_map;
+
 public:
     Client(ENetPeer* peer) : m_peer(peer) {}
 
@@ -23,5 +25,7 @@ public:
     PlayerState getPlayerState() { return m_state; }
     void loadPlayerState(PlayerState& state) { m_state = state; }
 
-    int getId() { return m_peer->connectID; }
+    unsigned int getId() { return m_peer->connectID; }
+
+    std::string getMap() { return m_map; }
 };

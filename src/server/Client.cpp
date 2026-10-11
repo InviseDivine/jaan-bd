@@ -12,6 +12,7 @@ void Client::packetReceived(ENetPacket* packet) {
         case Header::AUTH: {
             LoginPacket* pack = reinterpret_cast<LoginPacket*>(packet->data);
             m_username = pack->username;
+            m_map = pack->map;
             srv.clientLogined(this);
 
             printf("Auth %s\n", pack->username);
@@ -22,12 +23,8 @@ void Client::packetReceived(ENetPacket* packet) {
             UpdatePlayerPacket* pack = reinterpret_cast<UpdatePlayerPacket*>(packet->data);
             loadPlayerState(pack->state);
 
-            UpdateRemotePlayerPacket updPacket {
-                .id = (unsigned int)m_peer->connectID,
-                .state = m_state
-            };
+            srv.broadcastState(this);
 
-            srv.broadcast((char*)&updPacket, sizeof(updPacket), this);
             break;
         }
 
@@ -41,6 +38,15 @@ void Client::packetReceived(ENetPacket* packet) {
             std::copy(message.begin(), message.end(), broadcastMessage.message);
             
             srv.broadcast((char*)&broadcastMessage, sizeof(broadcastMessage), this);
+
+            break;
+        }
+
+        case Header::CHANGE_MAP: {
+            ChangeMapPacket* pack = reinterpret_cast<ChangeMapPacket*>(packet->data);
+
+            m_map = pack->name;
+            srv.mapChanged(this);
 
             break;
         }

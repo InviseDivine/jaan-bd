@@ -10,7 +10,9 @@ enum class Header : char {
     ADD_REMOTE_PLAYER,
     REMOVE_REMOTE_PLAYER,
     UPDATE_REMOTE_PLAYER,
-    SEND_MESSAGE
+    SEND_MESSAGE,
+    CHANGE_MAP,
+    MAP_CHANGED_FOR_PLAYER
 };
 
 struct PlayerState {
@@ -23,6 +25,7 @@ struct PlayerState {
 struct LoginPacket {
     Header header = Header::AUTH;
     char username[32] = { 0 };
+    char map[32] = { 0 };
 };
 
 struct UpdatePlayerPacket {
@@ -33,7 +36,7 @@ struct UpdatePlayerPacket {
 struct AddRemotePlayerPacket {
     Header header = Header::ADD_REMOTE_PLAYER;
     
-    int id;
+    unsigned int id;
     char username[32];
     
     PlayerState state;
@@ -54,5 +57,16 @@ struct SendMessagePacket {
     Header header = Header::SEND_MESSAGE;
     char message[1024];
 };
+
+struct ChangeMapPacket {
+    Header header = Header::CHANGE_MAP;
+    char name[32];
+};
+
+// struct MapChanged {
+//     Header header = Header::MAP_CHANGED_FOR_PLAYER;
+//     unsigned int id;
+//     char name[32];
+// };
 
 #pragma pack(pop) 

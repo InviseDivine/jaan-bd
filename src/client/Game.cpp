@@ -8,46 +8,6 @@
 #include <RemotePlayer.hpp>
 #include <Multiplayer.hpp>
 
-// void DrawCollisons(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
-//     // Vector2* position = (Vector2*)userdata;
-//     switch (collision.type)
-//     {
-//         case COLLISION_RECT: {
-//             Color color = object->obj_type == OT_TILE ? RED : BLUE;
-//             // collision.rect.x += position->x;
-//             // collision.rect.y += position->y;
-//             DrawRectangleLinesEx(collision.rect, 0.3f, color);
-//         } break;
-//         case COLLISION_POINT: {
-//             // collision.point.x += position->x;
-//             // collision.point.y += position->y;
-//             int centerX = (int)(collision.point.x + object->width / 2.0);
-//             int centerY = (int)(collision.point.y + object->height / 2.0);
-//             DrawCircle(centerX, centerY, 5.0f, YELLOW);
-//         } break;
-//         // case COLLISION_POLYGON:
-//         // case COLLISION_POLYLINE: {
-//         //     double** points = collision.polygon.points;
-//         //     int count       = collision.polygon.count;
-//         //     double offset_x = object->x + position->x;
-//         //     double offset_y = object->y + position->y;
-//         //     if (object->obj_type == OT_POLYGON) {
-//         //         DrawTMXPolygon(offset_x, offset_y, points, count, ORANGE);
-//         //     }
-//         //     if (object->obj_type == OT_POLYLINE) {
-//         //         DrawTMXPolyline(offset_x, offset_y, points, count, PURPLE);
-//         //     }
-//         // } break;
-//         // case COLLISION_ELLIPSE: {
-//         //     int centerX   = (int)(collision.rect.x + position->x);
-//         //     int centerY   = (int)(collision.rect.y + position->y);
-//         //     float radiusH = (float)(collision.rect.width);
-//         //     float radiusV = (float)(collision.rect.height);
-//         //     DrawEllipseLines(centerX, centerY, radiusH, radiusV, GREEN);
-//         // } break;
-//     }
-// }
-
 bool Game::loadMap(std::string const& name) {
     auto filename = "assets/" + name + ".tmx";
     auto map = LoadTMX(filename.c_str());
@@ -73,6 +33,10 @@ void Game::changeMap(std::string const& name) {
 
     m_map = map;
     m_player->setPoisition(findSpawn(map));
+    m_player->resetSpeed();
+
+    auto& mult = Multiplayer::get();
+    mult.mapChanged(name);
 }
 
 void Game::run() {
@@ -176,7 +140,6 @@ void Game::run() {
                 static TmxObject collided;
 
                 for (auto pl : players) pl->draw();
-                // CollisionsTMXForeach(m_map, DrawCollisons, NULL);
                 DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
 
@@ -231,65 +194,70 @@ void Game::removeAllRemotePlayers() {
     m_remotes.clear();
 }
 
-bool Game::checkInteracts(Rectangle bounds, TmxObject collided) {
+bool Game::checkInteracts() {
+    auto objectLayer = findLayer(m_map, "objects");
 
-    for (int i = 0; i < collided.propertiesLength; i++) {
-        auto prop = collided.properties[i];
+    TmxObject collided;
 
-        if (prop.name == "transition") {
-            changeMap(prop.stringValue);
+    if (objectLayer && CheckCollisionTMXObjectGroupRec(objectLayer->exact.objectGroup, m_player->m_bounds, &collided)) {        
+        for (auto i = 0; i < collided.propertiesLength; i++) {
+            auto prop = collided.properties[i];
 
-            return true;
+            if (strcmp(prop.name, "transition") == 0) {
+                changeMap(prop.stringValue);
+
+                return true;
+            }
         }
     }
 
     return false;
 }
 
-float Game::verifyCollisionX(Rectangle bounds, float speedX) {
+void Game::verifyCollisionX() {
     TmxObject collided;
 
-    if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, bounds, &collided)) {
-        if (speedX > 0)
-            bounds.x = collided.aabb.x - bounds.width;
-        else if (speedX < 0)
-            bounds.x = collided.aabb.x + collided.aabb.width;
+    if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, m_player->m_bounds, &collided)) {
+        if (m_player->m_speed.x > 0)
+            m_player->m_bounds.x = collided.aabb.x - m_player->m_bounds.width;
+        else if (m_player->m_speed.x < 0)
+            m_player->m_bounds.x = collided.aabb.x + collided.aabb.width;
     }
-
-    return bounds.x;
 }
 
-float Game::verifyCollisionY(Rectangle bounds, float speedY) {
+void Game::verifyCollisionY() {
     TmxObject collided;
-    if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, bounds, &collided)) {
-        if (checkInteracts(bounds, collided)) return 0;
-
-        if (speedY > 0)
-            bounds.y = collided.aabb.y - bounds.height;
-        else if (speedY < 0)
-            bounds.y = collided.aabb.y + collided.aabb.height;
+    if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, m_player->m_bounds, &collided)) {
+        if (m_player->m_speed.y > 0)
+            m_player->m_bounds.y = collided.aabb.y - m_player->m_bounds.height;
+        else if (m_player->m_speed.y < 0)
+            m_player->m_bounds.y = collided.aabb.y + collided.aabb.height;
     }
-    
-    return bounds.y;
+}
+
+TmxLayer* Game::findLayer(TmxMap* map, std::string const& name) {
+    for (int i = 0; i < map->layersLength; i++) {
+        auto& layer = map->layers[i];
+
+        if (name == layer.name) {
+            return &map->layers[i];
+        }
+    }
+
+    return nullptr;
 }
 
 Vector2 Game::findSpawn(TmxMap* map) {
     std::string objname = "spawnpoint";
 
-    TmxLayer objectLayer = TmxLayer();
-    for (int i = 0; i < map->layersLength; i++) {
-        auto layer = map->layers[i];
+    auto objectLayer = findLayer(map, "objects");
 
-        if (strcmp("objects", layer.name) == 0) {
-            objectLayer = layer;
-            break;
-        }
-    }
+    if (!objectLayer) return Vector2();
 
-    if (strcmp("objects", objectLayer.name) != 0) return Vector2();
+    if (strcmp("objects", objectLayer->name) != 0) return Vector2();
 
-    for (int i = 0; i < objectLayer.exact.objectGroup.objectsLength; i++) {
-        auto obj = objectLayer.exact.objectGroup.objects[i];
+    for (int i = 0; i < objectLayer->exact.objectGroup.objectsLength; i++) {
+        auto obj = objectLayer->exact.objectGroup.objects[i];
 
         if (obj.name == objname) {
             return Vector2(obj.x, obj.y);

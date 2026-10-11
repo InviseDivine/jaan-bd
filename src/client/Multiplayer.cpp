@@ -91,9 +91,14 @@ void Multiplayer::update() {
                 printf("Connected!\n");
                 m_connected = true;
 
+                auto& game = Game::get();
+                auto map = game.currentMap();
+
                 LoginPacket loginPacket;
                 std::copy(m_username.begin(), m_username.end(), loginPacket.username);
                 printf("My username: %s %s", m_username.c_str(), loginPacket.username);
+
+                std::copy(map->fileName, map->fileName + TextFindIndex(map->fileName, ".tmx")-1, loginPacket.map);
 
                 SEND_PACKET(loginPacket);
                 break;
@@ -146,4 +151,11 @@ void Multiplayer::sendPacket(char* data, int size) {
 
         enet_peer_send(m_peer, 0, packet);
     }
+}
+
+void Multiplayer::mapChanged(std::string const& to) {
+    ChangeMapPacket packet;
+    memcpy(packet.name, to.data(), to.size());
+
+    sendPacket((char*)&packet, sizeof(packet));
 }

@@ -37,13 +37,13 @@ public:
     void removeAllRemotePlayers();
 
     // do not like this i just have no time
-    float verifyCollisionX(Rectangle bounds, float speedX);
-    float verifyCollisionY(Rectangle bounds, float speedY);
+    void verifyCollisionX();
+    void verifyCollisionY();
 
-    bool checkInteracts(Rectangle bounds, TmxObject collided);
+    bool checkInteracts();
 
     Vector2 findSpawn(TmxMap* map);
-
+    TmxLayer* findLayer(TmxMap* map, std::string const& name);
 
     bool loadMap(std::string const& name);
     TmxMap* findMap(std::string const& name);
@@ -51,6 +51,5 @@ public:
     void changeMap(std::string const& name);
     TmxMap* currentMap() { return m_map; }
     
-
     void addMessage(std::string message) { m_messages.push_back(message); }
 };

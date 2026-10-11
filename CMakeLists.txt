@@ -32,7 +32,7 @@ CPMAddPackage(
         "BUILD_SHARED_LIBS OFF"
 )
 CPMAddPackage(
-    NAME "tmx"
+    NAME "raytmx"
     GIT_REPOSITORY "https://github.com/luphi/raytmx"
     GIT_TAG "main"
 )
@@ -58,9 +58,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_SOURCE_DIR}/src/client
     ${CMAKE_SOURCE_DIR}/src/shared
     ${enet_SOURCE_DIR}
-    ${tmx_SOURCE_DIR}
-    ${tmx_SOURCE_DIR}/external
-
+    ${raytmx_SOURCE_DIR}/external
 )
 
 target_link_libraries(${PROJECT_NAME}-server PUBLIC enet_static)

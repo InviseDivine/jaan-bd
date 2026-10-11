@@ -26,5 +26,7 @@ public:
     void run();
     void broadcast(char* data, int len, Client* exclude = nullptr);
 
+    void broadcastState(Client* cl);
+    void mapChanged(Client* cl);
     void clientLogined(Client* cl);
 };

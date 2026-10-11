@@ -97,7 +97,7 @@ void Server::clientLogined(Client* cl) {
         cl->loadPlayerState(m_savedPlayers[username]);
     }
 
-    {
+    { // broadcast new player to all
         AddRemotePlayerPacket packet{
             .id = cl->getId(),
             .state = cl->getPlayerState()
@@ -105,11 +105,21 @@ void Server::clientLogined(Client* cl) {
 
         std::copy(username.begin(), username.end(), packet.username);
 
+        for (auto& [us, client] : m_clients) {
+            if (client == cl) continue;
+            if (client->getMap() != cl->getMap()) continue;
+
+            client->sendPacket((char*)&packet, sizeof(packet));
+        }
+
         broadcast((char*)&packet, sizeof(packet), cl);
     }
 
+    // broadcast all players to new player
     for (auto& [us, client] : m_clients) {
         if (client == cl) continue;
+
+        if (client->getMap() != cl->getMap()) continue;
 
         auto us = client->getUsername();
 
@@ -121,5 +131,58 @@ void Server::clientLogined(Client* cl) {
         std::copy(us.begin(), us.end(), packet.username);
 
         cl->sendPacket((char*)&packet, sizeof(packet));
+    }
+}
+
+void Server::broadcastState(Client* cl) {
+    UpdateRemotePlayerPacket updPacket {
+        .id = cl->getId(),
+        .state = cl->getPlayerState()
+    };
+
+    auto map = cl->getMap();
+
+    for (auto& [us, client] : m_clients) {
+        if (client->getMap() == map) {
+            client->sendPacket((char*)&updPacket, sizeof(updPacket));
+        }
+    }
+}
+
+void Server::mapChanged(Client* cl) {
+    auto map = cl->getMap();
+
+    for (auto& [us, client] : m_clients) {
+        if (client == cl) continue;
+
+        if (client->getMap() == map) {
+            AddRemotePlayerPacket pack;
+            pack.id = cl->getId();
+            pack.state = cl->getPlayerState();
+
+            auto username = cl->getUsername();
+            memcpy(pack.username, username.data(), username.size());
+
+            client->sendPacket((char*)&pack, sizeof(pack));
+
+            AddRemotePlayerPacket pack2;
+            pack2.id = client->getId();
+            pack2.state = client->getPlayerState();
+
+            auto otherUsername = client->getUsername();
+            memcpy(pack2.username, otherUsername.data(), otherUsername.size());
+
+            cl->sendPacket((char*)&pack2, sizeof(pack2));
+        } else {
+            RemoveRemotePlayerPacket pack;
+            pack.id = cl->getId();
+
+            client->sendPacket((char*)&pack, sizeof(pack));
+
+            RemoveRemotePlayerPacket pack2;
+            pack2.id = client->getId();
+
+            cl->sendPacket((char*)&pack2, sizeof(pack2));
+        }
     }
 }
