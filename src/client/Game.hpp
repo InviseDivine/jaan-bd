@@ -40,9 +40,9 @@ public:
     float verifyCollisionX(Rectangle bounds, float speedX);
     float verifyCollisionY(Rectangle bounds, float speedY);
 
-    // void checkInteracts(Rectangle bounds);
+    bool checkInteracts(Rectangle bounds, TmxObject collided);
 
-    // Vector2 findSpawn(TmxMap* map);
+    Vector2 findSpawn(TmxMap* map);
 
 
     bool loadMap(std::string const& name);

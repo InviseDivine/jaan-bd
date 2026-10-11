@@ -69,10 +69,10 @@ TmxMap* Game::findMap(std::string const& name) {
 }
 
 void Game::changeMap(std::string const& name) {
-    // auto map = findMap(name);
+    auto map = findMap(name);
 
-    // m_map = map;
-    // m_player->setPoisition(findSpawn(map));
+    m_map = map;
+    m_player->setPoisition(findSpawn(map));
 }
 
 void Game::run() {
@@ -82,7 +82,7 @@ void Game::run() {
     loadMap("untitled");
     loadMap("house");
 
-    m_map = findMap("untitled");
+    m_map = findMap("house");
 
     Camera2D cam{
         .offset = Vector2{1280/2, 720/2},
@@ -115,7 +115,7 @@ void Game::run() {
     Timer timer(60.f);
 
     if (m_map) {
-        // m_player->setPoisition(findSpawn(m_map)); // near bed
+        m_player->setPoisition(findSpawn(m_map)); // near bed
     }
 
     while(!WindowShouldClose()) {
@@ -173,8 +173,9 @@ void Game::run() {
             BeginMode2D(cam);
                 DrawTMX(m_map, &cam, nullptr, 0, 0, WHITE);
                 
-                for (auto pl : players) pl->draw();
+                static TmxObject collided;
 
+                for (auto pl : players) pl->draw();
                 // CollisionsTMXForeach(m_map, DrawCollisons, NULL);
                 DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
@@ -230,39 +231,24 @@ void Game::removeAllRemotePlayers() {
     m_remotes.clear();
 }
 
-struct Collider {
-    Rectangle bounds;
-    float speed;
-};
+bool Game::checkInteracts(Rectangle bounds, TmxObject collided) {
 
-// void UpdateCollisionX(TmxObject *object, TmxColl collision, void* userdata) {
-//     Collider* collider = (Collider*)userdata;
-    
-//     if (collision.type == COLLISION_RECT) {
-//         if (CheckCollisionRecs(collider->bounds, collision.rect)) {
-//             if (collider->speed > 0)
-//                 collider->bounds.x = collision.rect.x - collider->bounds.width;
-//             else if (collider->speed < 0)
-//                 collider->bounds.x = collision.rect.x + collision.rect.width;
-//         }
-//     }
-// }
+    for (int i = 0; i < collided.propertiesLength; i++) {
+        auto prop = collided.properties[i];
 
-// void UpdateCollisionY(TmxObject *object, RaylibTMXCollision collision, void* userdata) {
-//     Collider* collider = (Collider*)userdata;
+        if (prop.name == "transition") {
+            changeMap(prop.stringValue);
 
-//     if (collision.type == COLLISION_RECT) {
-//         if (CheckCollisionRecs(collider->bounds, collision.rect)) {
-//             if (collider->speed > 0)
-//                 collider->bounds.y = collision.rect.y - collider->bounds.height;
-//             else if (collider->speed < 0)
-//                 collider->bounds.y = collision.rect.y + collision.rect.height;
-//         }
-//     }
-// }
+            return true;
+        }
+    }
+
+    return false;
+}
 
 float Game::verifyCollisionX(Rectangle bounds, float speedX) {
     TmxObject collided;
+
     if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, bounds, &collided)) {
         if (speedX > 0)
             bounds.x = collided.aabb.x - bounds.width;
@@ -276,44 +262,39 @@ float Game::verifyCollisionX(Rectangle bounds, float speedX) {
 float Game::verifyCollisionY(Rectangle bounds, float speedY) {
     TmxObject collided;
     if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, bounds, &collided)) {
+        if (checkInteracts(bounds, collided)) return 0;
+
         if (speedY > 0)
             bounds.y = collided.aabb.y - bounds.height;
         else if (speedY < 0)
-            bounds.y = collided.aabb.y + bounds.height;
+            bounds.y = collided.aabb.y + collided.aabb.height;
     }
     
     return bounds.y;
 }
 
-// Vector2 Game::findSpawn(tmx_map* map) {
-//     std::string objname = "spawnpoint";
+Vector2 Game::findSpawn(TmxMap* map) {
+    std::string objname = "spawnpoint";
 
-//     auto objects = tmx_find_layer_by_name(map, "objects");
+    TmxLayer objectLayer = TmxLayer();
+    for (int i = 0; i < map->layersLength; i++) {
+        auto layer = map->layers[i];
 
-//     if (!objects) return Vector2();
+        if (strcmp("objects", layer.name) == 0) {
+            objectLayer = layer;
+            break;
+        }
+    }
 
-//     auto obj = objects->content.objgr->head;
-//     while (obj) {
-//         if (obj->name && std::string(obj->name) == objname) {
-//             return Vector2(obj->x, obj->y);
-//         }
+    if (strcmp("objects", objectLayer.name) != 0) return Vector2();
 
-//         obj = obj->next;
-//     }
+    for (int i = 0; i < objectLayer.exact.objectGroup.objectsLength; i++) {
+        auto obj = objectLayer.exact.objectGroup.objects[i];
 
-//     return Vector2();
-// }
+        if (obj.name == objname) {
+            return Vector2(obj.x, obj.y);
+        }
+    }
 
-// void UpdateCollisionInteracts(tmx_object *object, RaylibTMXCollision collision, void* userdata) {
-//     if (collision.type == COLLISION_RECT) {
-        
-//         if (CheckCollisionRecs(*(Rectangle*)userdata, collision.rect)) {
-//             auto trans = tmx_get_property(object->properties, "transition");
-            
-//             if (trans != nullptr) {
-//                 TraceLog(LOG_INFO, "Transition!");
-//                 return Game::get().changeMap(trans->value.string);
-//             }
-//         }
-//     }
-// }
+    return Vector2();
+}

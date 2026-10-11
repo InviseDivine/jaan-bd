@@ -190,18 +190,12 @@
 </data>
  </layer>
  <objectgroup id="3" name="objects">
-  <object id="1" x="0" y="101.5" width="160" height="10.5535">
+  <object id="1" name="Exit from house" x="0" y="101.5" width="160" height="10.5535">
    <properties>
     <property name="transition" value="untitled"/>
    </properties>
   </object>
   <object id="3" name="spawnpoint" x="39.8182" y="58.3864">
-   <point/>
-  </object>
-  <object id="6" name="goto ylica" x="138.25" y="93.9318">
-   <properties>
-    <property name="transition" value="untitled"/>
-   </properties>
    <point/>
   </object>
  </objectgroup>

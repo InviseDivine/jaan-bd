@@ -17,7 +17,7 @@
   </tile>
   <tile id="3">
    <objectgroup draworder="index" id="2">
-    <object id="1" x="9.0324" y="5.17689" width="14.125" height="7.5"/>
+    <object id="1" x="8.92962" y="38.5074" width="14.125" height="7.5"/>
    </objectgroup>
   </tile>
   <tile id="4">
@@ -62,6 +62,11 @@
  </tileset>
  <tileset firstgid="387" name="home" tilewidth="72" tileheight="95" tilecount="1" columns="1">
   <image source="home.png" trans="55ffff" width="72" height="95"/>
+  <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="59.9688" height="86"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <layer id="1" name="Grass" width="60" height="50" tintcolor="#00aa36">
   <data encoding="csv">
