@@ -4319,8 +4319,6 @@ bool    CheckCollisionTMXTileLayerObject(const TmxMap *map, const TmxLayer *laye
         {
             if (CheckCollisionTMXTileLayerObject(map, layers[i].layers, layers[i].layersLength, object, outputObject))
                 return true;
-        } else if (layers[i].type == LAYER_TYPE_OBJECT_GROUP) {
-            printf("test \n");
         }
     }
 
