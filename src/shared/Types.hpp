@@ -37,7 +37,7 @@ struct AddRemotePlayerPacket {
     Header header = Header::ADD_REMOTE_PLAYER;
     
     unsigned int id;
-    char username[32];
+    char username[32] = { 0 };
     
     PlayerState state;
 };
@@ -60,13 +60,6 @@ struct SendMessagePacket {
 
 struct ChangeMapPacket {
     Header header = Header::CHANGE_MAP;
-    char name[32];
+    char name[32] = { 0 };
 };
-
-// struct MapChanged {
-//     Header header = Header::MAP_CHANGED_FOR_PLAYER;
-//     unsigned int id;
-//     char name[32];
-// };
-
 #pragma pack(pop) 

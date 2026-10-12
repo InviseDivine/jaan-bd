@@ -149,40 +149,40 @@ void Server::broadcastState(Client* cl) {
     }
 }
 
-void Server::mapChanged(Client* cl) {
-    auto map = cl->getMap();
+void Server::mapChanged(Client* me) {
+    auto map = me->getMap();
 
-    for (auto& [us, client] : m_clients) {
-        if (client == cl) continue;
+    for (auto& [us, other] : m_clients) {
+        if (other == me) continue;
 
-        if (client->getMap() == map) {
-            AddRemotePlayerPacket pack;
-            pack.id = cl->getId();
-            pack.state = cl->getPlayerState();
+        if (other->getMap() == map) {
+            AddRemotePlayerPacket mePacket;
+            mePacket.id = me->getId();
+            mePacket.state = me->getPlayerState();
 
-            auto username = cl->getUsername();
-            memcpy(pack.username, username.data(), username.size());
+            auto username = me->getUsername();
+            memcpy(mePacket.username, username.data(), username.size());
 
-            client->sendPacket((char*)&pack, sizeof(pack));
+            other->sendPacket((char*)&mePacket, sizeof(mePacket));
 
-            AddRemotePlayerPacket pack2;
-            pack2.id = client->getId();
-            pack2.state = client->getPlayerState();
+            AddRemotePlayerPacket otherPacket;
+            otherPacket.id = other->getId();
+            otherPacket.state = other->getPlayerState();
 
-            auto otherUsername = client->getUsername();
-            memcpy(pack2.username, otherUsername.data(), otherUsername.size());
+            auto otherUsername = other->getUsername();
+            memcpy(otherPacket.username, otherUsername.data(), otherUsername.size());
 
-            cl->sendPacket((char*)&pack2, sizeof(pack2));
+            me->sendPacket((char*)&otherPacket, sizeof(otherPacket));
         } else {
-            RemoveRemotePlayerPacket pack;
-            pack.id = cl->getId();
+            RemoveRemotePlayerPacket mePacket;
+            mePacket.id = me->getId();
 
-            client->sendPacket((char*)&pack, sizeof(pack));
+            other->sendPacket((char*)&mePacket, sizeof(mePacket));
 
-            RemoveRemotePlayerPacket pack2;
-            pack2.id = client->getId();
+            RemoveRemotePlayerPacket otherPacket;
+            otherPacket.id = other->getId();
 
-            cl->sendPacket((char*)&pack2, sizeof(pack2));
+            me->sendPacket((char*)&otherPacket, sizeof(otherPacket));
         }
     }
 }

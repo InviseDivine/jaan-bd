@@ -45,6 +45,8 @@ void Client::packetReceived(ENetPacket* packet) {
         case Header::CHANGE_MAP: {
             ChangeMapPacket* pack = reinterpret_cast<ChangeMapPacket*>(packet->data);
 
+            printf("%s changed map to %s\n", m_username.c_str(), m_map.c_str());
+
             m_map = pack->name;
             srv.mapChanged(this);
 

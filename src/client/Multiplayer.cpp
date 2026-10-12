@@ -158,4 +158,6 @@ void Multiplayer::mapChanged(std::string const& to) {
     memcpy(packet.name, to.data(), to.size());
 
     sendPacket((char*)&packet, sizeof(packet));
+
+    printf("changed map to %s sent!\n", to.c_str());
 }
