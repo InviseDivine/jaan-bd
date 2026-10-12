@@ -42,13 +42,13 @@ public:
 
     bool checkInteracts();
 
-    Vector2 findSpawn(TmxMap* map);
+    Vector2 findSpawn(TmxMap* map, std::string spawnpoint = "spawnpoint");
     TmxLayer* findLayer(TmxMap* map, std::string const& name);
 
     bool loadMap(std::string const& name);
     TmxMap* findMap(std::string const& name);
     
-    void changeMap(std::string const& name);
+    void changeMap(std::string const& name, std::string spawnpoint);
     TmxMap* currentMap() { return m_map; }
     
     void addMessage(std::string message) { m_messages.push_back(message); }

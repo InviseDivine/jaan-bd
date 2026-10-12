@@ -28,11 +28,11 @@ TmxMap* Game::findMap(std::string const& name) {
     return nullptr;
 }
 
-void Game::changeMap(std::string const& name) {
+void Game::changeMap(std::string const& name, std::string spawnpoint = "spawnpoint") {
     auto map = findMap(name);
 
     m_map = map;
-    m_player->setPoisition(findSpawn(map));
+    m_player->setPoisition(findSpawn(map, spawnpoint));
     m_player->resetSpeed();
 
     auto& mult = Multiplayer::get();
@@ -45,7 +45,8 @@ void Game::run() {
 
     loadMap("untitled");
     loadMap("house");
-
+    loadMap("kolyahhouse");
+ 
     m_map = findMap("house");
 
     Camera2D cam{
@@ -137,8 +138,6 @@ void Game::run() {
             BeginMode2D(cam);
                 DrawTMX(m_map, &cam, nullptr, 0, 0, WHITE);
                 
-                static TmxObject collided;
-
                 for (auto pl : players) pl->draw();
                 DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
@@ -204,8 +203,16 @@ bool Game::checkInteracts() {
             auto prop = collided.properties[i];
 
             if (strcmp(prop.name, "transition") == 0) {
-                changeMap(prop.stringValue);
+                for (int x = 0; x < collided.propertiesLength; x++) {
+                    auto spawnName = collided.properties[x];
 
+                    if (strcmp(spawnName.name, "spawnpoint") == 0) {
+                        changeMap(prop.stringValue, spawnName.stringValue);
+                        return true;
+                    }
+                }
+
+                changeMap(prop.stringValue);
                 return true;
             }
         }
@@ -247,8 +254,8 @@ TmxLayer* Game::findLayer(TmxMap* map, std::string const& name) {
     return nullptr;
 }
 
-Vector2 Game::findSpawn(TmxMap* map) {
-    std::string objname = "spawnpoint";
+Vector2 Game::findSpawn(TmxMap* map, std::string spawnpoint) {
+    std::string objname = spawnpoint;
 
     auto objectLayer = findLayer(map, "objects");
 

@@ -3819,8 +3819,14 @@ void DrawTMXLayerTile(const TmxMap *map, Rectangle viewport, RaytmxTransform tra
     destRect.y += transform.position.y + tile.offset.y + map->tileHeight - tile.sourceRect.height;
 
     // If the viewport and destination rectangles are overlapping to any degree (i.e. if the tile is visible).
-    if (CheckCollisionRecs(viewport, destRect))
+    if (CheckCollisionRecs(viewport, destRect)) {
+        float eps = 0.05f;
+        tile.sourceRect.x += eps;
+        tile.sourceRect.y += eps;
+        tile.sourceRect.width -= eps * 2.f;
+        tile.sourceRect.height -= eps * 2.f;
         DrawTextureTile(tile.texture, tile.sourceRect, destRect, flipX, flipY, flipDiag, tint); // Draw the tile.
+    }
 }
 
 void DrawTMXObjectTile(const TmxMap *map, Rectangle viewport, uint32_t rawGid, RaytmxTransform transform, float width,
