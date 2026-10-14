@@ -21,6 +21,12 @@ private:
     Game() = default;
 
     std::vector<std::string> m_messages;
+
+    std::string m_dialogMessage;
+    bool m_showDialog;
+    int m_currentPos;
+
+    Font m_marksman;
 public:
     Game(Game&&) = delete;
 

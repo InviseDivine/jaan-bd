@@ -43,12 +43,22 @@ void Game::run() {
     InitWindow(1280, 720, "JaanBD");
     SetTargetFPS(60);
 
+    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+    int len = 0;
+    int* codepoints = LoadCodepoints(codepointsText.c_str(), &len);
+
+    m_marksman = LoadFontEx("assets/marksman.otf", 30, codepoints, len);
+    SetTextureFilter(m_marksman.texture, TEXTURE_FILTER_POINT);
+    UnloadCodepoints(codepoints);
+
     loadMap("untitled");
     loadMap("house");
     loadMap("kolyahhouse");
- 
-    m_map = findMap("house");
+    loadMap("invdivhouse");
+    loadMap("fullharmonyhouse");
 
+    m_map = findMap("house");
+    
     Camera2D cam{
         .offset = Vector2{1280/2, 720/2},
         .target = Vector2{0.f, 0.f},
@@ -91,28 +101,26 @@ void Game::run() {
         }
 
         Vector2 position = m_player->getPosition();
-        Vector2 min = {
-            cam.offset.x / cam.zoom,
-            cam.offset.y / cam.zoom
-        };
 
-        Vector2 max = {
-            m_map->tileWidth * (m_map->width - 1) - (cam.offset.x / cam.zoom),
-            m_map->tileHeight * (m_map->height - 1) - (cam.offset.y / cam.zoom)
-        };
+        cam.target = position;
 
-        if (min.x < max.x && min.y < max.y) {
-            cam.target = {
-                std::clamp(position.x, min.x, max.x),
-                std::clamp(position.y, min.x, max.y)
-            };
-        } else {    
-            cam.target = {
-                (float)m_map->tileWidth * (m_map->width - 1) / 2,
-                (float)m_map->tileHeight * (m_map->height - 1) / 2
-            };
-        }
+        // ----- VIBECODE AHTUNG!!! -----
+        const float mapW = (float)(m_map->width  * m_map->tileWidth);
+        const float mapH = (float)(m_map->height * m_map->tileHeight);
 
+        const float left   = cam.offset.x / cam.zoom;
+        const float right  = (GetScreenWidth()  - cam.offset.x) / cam.zoom;
+        const float top    = cam.offset.y / cam.zoom;
+        const float bottom = (GetScreenHeight() - cam.offset.y) / cam.zoom;
+
+        const float minX = left;
+        const float maxX = mapW - right;
+        const float minY = top;
+        const float maxY = mapH - bottom;
+
+        cam.target.x = (minX > maxX) ? mapW * 0.5f : std::clamp(cam.target.x, minX, maxX);
+        cam.target.y = (minY > maxY) ? mapH * 0.5f : std::clamp(cam.target.y, minY, maxY);
+        // -----
         mult.update();
 
         static std::vector<Entity*> players;
@@ -132,6 +140,7 @@ void Game::run() {
             }
         }
 
+        AnimateTMX(m_map);
 
         BeginDrawing();
         ClearBackground(BLACK);
@@ -162,6 +171,25 @@ void Game::run() {
                     DrawText((mult.connected()) ? "Connected!" : "Disconnected", 5, 695, 20, (mult.connected()) ? GREEN : RED);
                 }
             }
+
+            if (m_showDialog) {
+                if (m_currentPos < m_dialogMessage.length()) {
+                    m_currentPos++;
+                }
+
+                float padding = 10.f;
+                float width = GetScreenWidth() - padding * 2;
+                float height = 200.f;
+                int thick = 5;
+                
+                float x = padding;
+                float y = GetScreenHeight() - height - padding;
+                DrawRectangle(x + thick, y + thick, width - thick, height - thick, BLACK);
+                DrawRectangleLinesEx({x, y, width, height}, thick, WHITE);
+
+                DrawTextEx(m_marksman, TextSubtext(m_dialogMessage.c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
+            }
+
         EndDrawing();
     }
 }
@@ -213,6 +241,14 @@ bool Game::checkInteracts() {
                 }
 
                 changeMap(prop.stringValue);
+                return true;
+            }
+
+            if (strcmp(prop.name, "dialogue") == 0 && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_ENTER)) && !m_showDialog) {
+                m_currentPos = 0;
+                m_dialogMessage = prop.stringValue;
+                m_showDialog = true;
+
                 return true;
             }
         }

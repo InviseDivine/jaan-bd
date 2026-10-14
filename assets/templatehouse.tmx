@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="9">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="9">
  <tileset firstgid="1" name="Interior" tilewidth="16" tileheight="16" tilecount="108" columns="12">
   <image source="Interior.png" trans="55ffff" width="192" height="144"/>
   <tile id="5">
@@ -101,6 +101,16 @@
  </tileset>
  <tileset firstgid="109" name="blocks" tilewidth="16" tileheight="16" tilecount="256" columns="16">
   <image source="blocks.png" trans="55ffff" width="256" height="256"/>
+  <tile id="56">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="57">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
   <tile id="71">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="0" width="16" height="16"/>
@@ -141,6 +151,36 @@
  <tileset firstgid="367" name="monitor" tilewidth="24" tileheight="17" tilecount="1" columns="1">
   <image source="monitor.png" width="24" height="17"/>
  </tileset>
+ <tileset firstgid="368" name="guitars" tilewidth="31" tileheight="35" tilecount="1" columns="1">
+  <image source="guitars.png" width="31" height="35"/>
+  <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="31" height="35"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="369" name="cat" tilewidth="32" tileheight="18" tilecount="1" columns="1">
+  <image source="cat.png" width="32" height="18"/>
+  <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="32" height="18"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="370" name="flowerpot" tilewidth="16" tileheight="20" tilecount="1" columns="1">
+  <image source="flowerpot.png" width="16" height="20"/>
+  <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="3" y="0" width="11" height="16"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="371" name="carpet" tilewidth="16" tileheight="16" tilecount="12" columns="3">
+  <image source="carpet.png" width="48" height="64"/>
+ </tileset>
+ <tileset firstgid="383" name="wardrobe" tilewidth="17" tileheight="38" tilecount="1" columns="1">
+  <image source="wardrobe.png" width="17" height="38"/>
+ </tileset>
  <layer id="2" name="Tile Layer 2" width="15" height="12">
   <data encoding="csv">
 165,165,166,165,165,166,166,165,166,165,165,165,165,165,165,
@@ -162,29 +202,61 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,366,0,0,0,
-317,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,365,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,61,63,0,0,0,0,0,0,0,0,0,0,0,
-165,165,73,75,165,165,165,165,165,165,165,165,165,165,165,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+165,165,0,0,165,165,165,165,165,165,165,165,165,165,165,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="6" name="Слой тайлов 3" width="15" height="12">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,13,0,0,0,0,0,0,0,
-91,0,0,0,0,0,0,0,0,0,0,0,367,0,0,
-103,0,0,0,0,0,0,0,0,0,0,0,98,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,42,43,0,0,
-0,0,0,0,0,0,0,0,0,0,0,54,55,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="7" name="Слой тайлов 4" width="15" height="12">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="8" name="Слой тайлов 5" width="15" height="12">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
