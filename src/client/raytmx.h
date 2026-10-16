@@ -3867,8 +3867,10 @@ void DrawTMXObjectTile(const TmxMap *map, Rectangle viewport, uint32_t rawGid, R
         width, height };
 
     // If the viewport and destination rectangles are overlapping to any degree (i.e. if the tile is visible).
-    if (CheckCollisionRecs(viewport, destRect))
+
+    if (CheckCollisionRecs(viewport, destRect)) {
         DrawTextureTile(tile.texture, tile.sourceRect, destRect, flipX, flipY, flipDiag, tint); // Draw the tile.
+    }
 }
 
 void DrawTMXObjectGroup(const TmxMap *map, Rectangle viewport, TmxLayer layer, RaytmxTransform transform, Color tint)
@@ -3889,8 +3891,9 @@ void DrawTMXObjectGroup(const TmxMap *map, Rectangle viewport, TmxLayer layer, R
             RaytmxTransform transform2 = transform;
             transform2.position.x += (float)object.x;
             transform2.position.y += (float)object.y;
+
             // Note: This draw method handles culling so it doesn't need to be done here.
-            DrawTMXObjectTile(map, viewport, object.gid, transform2, (float)object.width, (float)object.height, tint);
+            DrawTMXObjectTile(map, viewport, object.gid, transform2, *((float*)&object.width), *((float*)&object.height), tint);
         }
         else // If the object is any type other than a tile.
         {

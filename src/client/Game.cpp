@@ -269,7 +269,7 @@ bool Game::checkInteracts() {
 
             if (strcmp(prop.name, "candle") == 0) {
                 m_collectedCandles++;
-
+                
                 for (int i = 0; i < objectLayer->exact.objectGroup.objectsLength; i++) {
                     if (objectLayer->exact.objectGroup.objects[i].id == collided.id) {
                         for (int j = i; j < objectLayer->exact.objectGroup.objectsLength-1; j++)
