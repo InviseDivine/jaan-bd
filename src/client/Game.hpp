@@ -27,6 +27,8 @@ private:
     int m_currentPos;
 
     Font m_marksman;
+    Texture2D m_candle;
+    int m_collectedCandles = 0;
 public:
     Game(Game&&) = delete;
 

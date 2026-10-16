@@ -51,6 +51,8 @@ void Game::run() {
     SetTextureFilter(m_marksman.texture, TEXTURE_FILTER_POINT);
     UnloadCodepoints(codepoints);
 
+    m_candle = LoadTexture("assets/candle.png");
+
     loadMap("untitled");
     loadMap("house");
     loadMap("kolyahhouse");
@@ -96,8 +98,10 @@ void Game::run() {
     while(!WindowShouldClose()) {
         timer.advanceTime();
 
-        for (int i = 0; i < timer.getTicks(); i++) {
-            m_player->onTick();
+        if (!m_showDialog) {
+            for (int i = 0; i < timer.getTicks(); i++) {
+                m_player->onTick();
+            }
         }
 
         Vector2 position = m_player->getPosition();
@@ -105,6 +109,7 @@ void Game::run() {
         cam.target = position;
 
         // ----- VIBECODE AHTUNG!!! -----
+        // kolyah35: bro this is not vibe code just ai assist
         const float mapW = (float)(m_map->width  * m_map->tileWidth);
         const float mapH = (float)(m_map->height * m_map->tileHeight);
 
@@ -188,8 +193,18 @@ void Game::run() {
                 DrawRectangleLinesEx({x, y, width, height}, thick, WHITE);
 
                 DrawTextEx(m_marksman, TextSubtext(m_dialogMessage.c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
+
+                if (m_currentPos == m_dialogMessage.length() && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE))) {
+                    m_showDialog = false;
+                }
             }
 
+            // решил сделать фокус членом
+            rlPushMatrix();
+            rlScalef(3.f, 3.f, 0.f);
+            DrawTextureRec(m_candle, {0, 0, 16, 12}, {10, 10}, WHITE);
+            DrawText(TextFormat("%d/4", m_collectedCandles), 25, 12, 10, WHITE);
+            rlPopMatrix();
         EndDrawing();
     }
 }
@@ -251,6 +266,20 @@ bool Game::checkInteracts() {
 
                 return true;
             }
+
+            if (strcmp(prop.name, "candle") == 0) {
+                m_collectedCandles++;
+
+                for (int i = 0; i < objectLayer->exact.objectGroup.objectsLength; i++) {
+                    if (objectLayer->exact.objectGroup.objects[i].id == collided.id) {
+                        for (int j = i; j < objectLayer->exact.objectGroup.objectsLength-1; j++)
+                            objectLayer->exact.objectGroup.objects[j] = objectLayer->exact.objectGroup.objects[j+1];
+                        
+                        objectLayer->exact.objectGroup.objectsLength--;
+                        return true;
+                    }
+                }
+            } 
         }
     }
 

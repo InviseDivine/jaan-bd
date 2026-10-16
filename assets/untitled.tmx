@@ -76,6 +76,7 @@
    </objectgroup>
   </tile>
  </tileset>
+ <tileset firstgid="389" source="candle.tsx"/>
  <layer id="1" name="Grass" width="60" height="40" tintcolor="#00aa36">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,

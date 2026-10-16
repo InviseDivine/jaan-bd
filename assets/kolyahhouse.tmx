@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="13" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="9">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="13" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="11">
  <tileset firstgid="1" name="Interior" tilewidth="16" tileheight="16" tilecount="108" columns="12">
   <image source="Interior.png" trans="55ffff" width="192" height="144"/>
   <tile id="5">
@@ -159,6 +159,27 @@
   <tile id="74">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="87">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="88">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="89">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="90">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
    </objectgroup>
   </tile>
  </tileset>
@@ -200,6 +221,16 @@
    <objectgroup draworder="index" id="2">
     <object id="1" x="2" y="3" width="28" height="29"/>
    </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="370" source="candle.tsx"/>
+ <tileset firstgid="372" name="candle" tilewidth="16" tileheight="12" tilecount="2" columns="2">
+  <image source="../build/Debug/assets/candle.png" trans="55ffff" width="32" height="12"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="1000"/>
+    <frame tileid="1" duration="1000"/>
+   </animation>
   </tile>
  </tileset>
  <layer id="2" name="Tile Layer 2" width="13" height="12">
@@ -244,5 +275,6 @@
   <object id="3" name="spawnpoint" x="39.125" y="169.705">
    <point/>
   </object>
+  <object id="10" gid="372" x="47.4545" y="62.5455" width="16" height="12"/>
  </objectgroup>
 </map>
