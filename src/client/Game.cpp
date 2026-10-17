@@ -58,6 +58,9 @@ void Game::run() {
     loadMap("kolyahhouse");
     loadMap("invdivhouse");
     loadMap("fullharmonyhouse");
+    loadMap("danilkahouse");
+    loadMap("delhouse");
+
     loadMap("end");
 
     m_map = findMap("house");
