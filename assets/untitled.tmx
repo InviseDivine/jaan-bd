@@ -355,6 +355,11 @@
     <property name="transition" value="danilkahouse"/>
    </properties>
   </object>
+  <object id="28" x="463.818" y="-0.181818" width="32.5455" height="16.0909">
+   <properties>
+    <property name="transition" value="end"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="17" name="Слой тайлов 4" width="60" height="40" opacity="0.4">
   <data encoding="csv">
