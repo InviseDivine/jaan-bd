@@ -14,6 +14,8 @@ class Game {
 private:
     std::unordered_map<unsigned int, RemotePlayer*> m_remotes;
     std::unordered_map<std::string, TmxMap*> m_maps;
+    std::unordered_map<std::string, Sound> m_sounds;
+    std::unordered_map<std::string, Music> m_music;
     Player* m_player;
 
     TmxMap* m_map;
@@ -34,6 +36,8 @@ private:
     int m_collectedCandles;
 
     std::string m_username;
+
+    Music* m_currentTrack = nullptr;
 public:
     Game(Game&&) = delete;
 
@@ -63,6 +67,8 @@ public:
     
     void changeMap(std::string const& name, std::string spawnpoint);
     TmxMap* currentMap() { return m_map; }
+
+    TmxProperty* findProperty(TmxMap* map, std::string const& name);
     
     void addMessage(std::string message) { m_messages.push_back(message); }
 };

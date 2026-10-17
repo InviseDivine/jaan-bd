@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="11">
+ <properties>
+  <property name="background_music" value="avril14.mp3"/>
+ </properties>
  <tileset firstgid="1" name="Interior" tilewidth="16" tileheight="16" tilecount="108" columns="12">
   <image source="Interior.png" trans="55ffff" width="192" height="144"/>
   <tile id="5">

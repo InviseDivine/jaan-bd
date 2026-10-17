@@ -1,3 +1,4 @@
+#define MMNOSOUND
 #include "Game.hpp"
 #include <raylib.h>
 #include <fstream>
@@ -31,6 +32,17 @@ TmxMap* Game::findMap(std::string const& name) {
 void Game::changeMap(std::string const& name, std::string spawnpoint = "spawnpoint") {
     auto map = findMap(name);
 
+    auto prop = findProperty(map, "background_music");
+
+    if (prop != nullptr) {
+        m_currentTrack = &m_music[prop->stringValue];
+        m_currentTrack->looping = true;
+        SetMusicVolume(*m_currentTrack, 0.3f);
+        PlayMusicStream(*m_currentTrack);
+    } else {
+        m_currentTrack = nullptr;
+    }
+
     m_map = map;
     m_player->setPoisition(findSpawn(map, spawnpoint));
     m_player->resetSpeed();
@@ -42,6 +54,7 @@ void Game::changeMap(std::string const& name, std::string spawnpoint = "spawnpoi
 void Game::run() {
     InitWindow(1280, 720, "JaanBD");
     SetTargetFPS(60);
+    InitAudioDevice();
 
     std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!";
     int len = 0;
@@ -73,6 +86,7 @@ void Game::run() {
     };
 
     TraceLog(LOG_INFO, "Map size in pixels %ix%i", m_map->tileWidth * m_map->width, m_map->tileHeight * m_map->height);
+    SetMasterVolume(0.5f);
 
     std::string username;
     if(FileExists("username.txt")) {
@@ -87,6 +101,19 @@ void Game::run() {
     std::string texName = "assets/" + username + ".png";
 
     Texture2D plTex = LoadTexture(texName.c_str());
+
+    #define LoadSnd(name) m_sounds[name] = LoadSound("assets/"##name)
+
+    LoadSnd("meow.mp3");
+    LoadSnd("snd_doorclose.wav");
+    LoadSnd("snd_dooropen.wav");
+
+    #define LoadMsc(name) m_music[name] = LoadMusicStream("assets/"##name)
+
+    LoadMsc("temple_of_magics.mp3");
+    LoadMsc("avril14.mp3");
+    LoadMsc("californication.mp3");
+
 
     if (!plTex.id) {
         TraceLog(LOG_FATAL, "Failed to load your skin");
@@ -103,6 +130,10 @@ void Game::run() {
     }
 
     while(!WindowShouldClose()) {
+        if (m_currentTrack != nullptr) {
+            UpdateMusicStream(*m_currentTrack);
+        }
+
         timer.advanceTime();
 
         if (!m_showDialog) {
@@ -344,6 +375,11 @@ bool Game::checkInteracts() {
             if (strcmp(prop.name, "activate_counter") == 0 && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_ENTER))) {
                 m_counterVisible = prop.boolValue;
                 continue;
+            }
+
+            if (strcmp(prop.name, "play_sound") == 0 && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_ENTER))) {
+                PlaySound(m_sounds[prop.stringValue]);
+                continue;
             } 
         }
     }
@@ -402,4 +438,14 @@ Vector2 Game::findSpawn(TmxMap* map, std::string spawnpoint) {
     }
 
     return Vector2();
+}
+
+TmxProperty* Game::findProperty(TmxMap* map, std::string const& name) {
+    for (int i = 0; i < map->propertiesLength; i++) {
+        if (map->properties[i].name == name) {
+            return &map->properties[i];
+        }
+    }
+
+    return nullptr;
 }
