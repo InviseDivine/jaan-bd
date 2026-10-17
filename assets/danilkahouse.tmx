@@ -265,7 +265,7 @@
  <objectgroup id="3" name="objects">
   <object id="1" name="Exit from house" x="31.5624" y="181.445" width="32.4318" height="10.5535">
    <properties>
-    <property name="spawnpoint" value="spawnpoint2"/>
+    <property name="spawnpoint" value="spawnpoint6"/>
     <property name="transition" value="untitled"/>
    </properties>
   </object>
