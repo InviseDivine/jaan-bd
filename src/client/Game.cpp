@@ -58,6 +58,7 @@ void Game::run() {
     loadMap("kolyahhouse");
     loadMap("invdivhouse");
     loadMap("fullharmonyhouse");
+    loadMap("end");
 
     m_map = findMap("house");
     
@@ -77,6 +78,7 @@ void Game::run() {
         username = "jaan";
     }
 
+    m_username = username;
     std::string texName = "assets/" + username + ".png";
 
     Texture2D plTex = LoadTexture(texName.c_str());
@@ -203,7 +205,7 @@ void Game::run() {
             rlPushMatrix();
             rlScalef(3.f, 3.f, 0.f);
             DrawTextureRec(m_candle, {0, 0, 16, 12}, {10, 10}, WHITE);
-            DrawText(TextFormat("%d/4", m_collectedCandles), 25, 12, 10, WHITE);
+            DrawText(TextFormat("%d/5", m_collectedCandles), 25, 12, 10, WHITE);
             rlPopMatrix();
         EndDrawing();
     }
@@ -246,6 +248,10 @@ bool Game::checkInteracts() {
             auto prop = collided.properties[i];
 
             if (strcmp(prop.name, "transition") == 0) {
+                if (strcmp(prop.stringValue, "end") == 0) {
+                    if (m_username == "jaan" && m_collectedCandles < 5) return false;
+                }
+
                 for (int x = 0; x < collided.propertiesLength; x++) {
                     auto spawnName = collided.properties[x];
 
@@ -276,9 +282,11 @@ bool Game::checkInteracts() {
                             objectLayer->exact.objectGroup.objects[j] = objectLayer->exact.objectGroup.objects[j+1];
                         
                         objectLayer->exact.objectGroup.objectsLength--;
-                        return true;
                     }
                 }
+
+                findLayer(m_map, "candles")->visible = false;
+                return true;
             } 
         }
     }

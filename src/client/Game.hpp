@@ -29,6 +29,8 @@ private:
     Font m_marksman;
     Texture2D m_candle;
     int m_collectedCandles = 0;
+
+    std::string m_username;
 public:
     Game(Game&&) = delete;
 
