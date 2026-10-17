@@ -22,9 +22,12 @@ private:
 
     std::vector<std::string> m_messages;
 
-    std::string m_dialogMessage;
+    std::vector<std::string> m_dialogMessage;
     bool m_showDialog;
     int m_currentPos;
+    int m_currentMessage;
+    bool m_counterVisible = false;
+    bool m_reconnectingVisible;
 
     Font m_marksman;
     Texture2D m_candle;

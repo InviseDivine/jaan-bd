@@ -369,6 +369,18 @@
     <property name="transition" value="end"/>
    </properties>
   </object>
+  <object id="32" name="Dialogue" x="267.818" y="161.909" width="24.8636" height="32.9318">
+   <properties>
+    <property name="activate_counter" type="bool" value="true"/>
+    <property name="dialogue">о привет
+все куда то смотались
+меня оставили следить за шашлыком
+короче мы тут приготовили торт для тебя
+только вот все чето забегались и позабывали свечи дома
+не мог бы ты походить по домам и собрать их?
+мне просто нужно следить за шашлыком</property>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="17" name="Слой тайлов 4" width="60" height="40" opacity="0.4">
   <data encoding="csv">

@@ -43,7 +43,7 @@ void Game::run() {
     InitWindow(1280, 720, "JaanBD");
     SetTargetFPS(60);
 
-    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890";
+    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!";
     int len = 0;
     int* codepoints = LoadCodepoints(codepointsText.c_str(), &len);
 
@@ -77,8 +77,10 @@ void Game::run() {
     std::string username;
     if(FileExists("username.txt")) {
         username = TextToLower(LoadFileText("username.txt"));
+        m_reconnectingVisible = true;
     } else {
         username = "jaan";
+        m_reconnectingVisible = false;
     }
 
     m_username = username;
@@ -190,7 +192,7 @@ void Game::run() {
                 DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
 
-            { // Connecting state
+            if (m_reconnectingVisible) { // Connecting state
                 static bool lastConnect = false;
                 static float lastConnectTime = -10.f;
 
@@ -211,8 +213,12 @@ void Game::run() {
                 }
             }
 
+            if (m_showDialog && m_currentMessage == m_dialogMessage.size()) {
+                m_showDialog = false;
+            }
+
             if (m_showDialog) {
-                if (m_currentPos < m_dialogMessage.length()) {
+                if (m_currentPos < m_dialogMessage[m_currentMessage].length()) {
                     m_currentPos++;
                 }
 
@@ -226,19 +232,25 @@ void Game::run() {
                 DrawRectangle(x + thick, y + thick, width - thick, height - thick, BLACK);
                 DrawRectangleLinesEx({x, y, width, height}, thick, WHITE);
 
-                DrawTextEx(m_marksman, TextSubtext(m_dialogMessage.c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
+                DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
 
-                if (m_currentPos == m_dialogMessage.length() && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE))) {
-                    m_showDialog = false;
+                if (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE)) {
+                    if (m_currentPos < m_dialogMessage[m_currentMessage].length()) m_currentPos = m_dialogMessage[m_currentMessage].length();
+                    else if (m_currentPos == m_dialogMessage[m_currentMessage].length()) {
+                        m_currentMessage++;
+                        m_currentPos = 0;
+                    }
                 }
             }
 
-            // решил сделать фокус членом
-            rlPushMatrix();
-            rlScalef(3.f, 3.f, 0.f);
-            DrawTextureRec(m_candle, {0, 0, 16, 12}, {10, 10}, WHITE);
-            DrawText(TextFormat("%d/5", m_collectedCandles), 25, 12, 10, WHITE);
-            rlPopMatrix();
+            if (m_counterVisible && !m_showDialog) {
+                // решил сделать фокус членом
+                rlPushMatrix();
+                rlScalef(3.f, 3.f, 0.f);
+                DrawTextureRec(m_candle, {0, 0, 16, 12}, {10, 10}, WHITE);
+                DrawText(TextFormat("%d/5", m_collectedCandles), 25, 12, 10, WHITE);
+                rlPopMatrix();
+            }
         EndDrawing();
     }
 }
@@ -299,7 +311,15 @@ bool Game::checkInteracts() {
 
             if (strcmp(prop.name, "dialogue") == 0 && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_ENTER)) && !m_showDialog) {
                 m_currentPos = 0;
-                m_dialogMessage = prop.stringValue;
+                m_currentMessage = 0;
+                m_dialogMessage.clear();
+
+                int lines = 0;
+                char** dialogues = TextSplit(prop.stringValue, '\n', &lines);
+                for (int i = 0; i < lines; i++) {
+                    m_dialogMessage.push_back(dialogues[i]);
+                }
+
                 m_showDialog = true;
 
                 return true;
@@ -319,6 +339,11 @@ bool Game::checkInteracts() {
 
                 findLayer(m_map, "candles")->visible = false;
                 return true;
+            } 
+
+            if (strcmp(prop.name, "activate_counter") == 0 && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_ENTER))) {
+                m_counterVisible = prop.boolValue;
+                continue;
             } 
         }
     }
