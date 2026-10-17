@@ -155,6 +155,35 @@ void Game::run() {
         ClearBackground(BLACK);
             BeginMode2D(cam);
                 DrawTMX(m_map, &cam, nullptr, 0, 0, WHITE);
+                for (int i = 0; i < m_collectedCandles; i++) {
+                    // SYKA CHTO DELAET ETOT TIP?!
+                    switch(i) {
+                        case 0: {
+                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {474, 299 - 9}, WHITE);
+                            break;
+                        }
+
+                        case 1: {
+                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {483, 299 - 9}, WHITE);
+                            break;
+                        }
+
+                        case 2: {
+                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {476, 301 - 9}, WHITE);
+                            break;
+                        }
+
+                        case 3: {
+                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {481, 301 - 9}, WHITE);
+                            break;
+                        }
+
+                        case 4: {
+                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {478, 300 - 9}, WHITE);
+                            break;
+                        }
+                    }
+                }
                 
                 for (auto pl : players) pl->draw();
                 DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
