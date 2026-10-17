@@ -161,28 +161,28 @@
   <image source="Moxs.png" width="47" height="15"/>
  </tileset>
  <tileset firstgid="382" name="Paint_cans" tilewidth="21" tileheight="15" tilecount="1" columns="1">
-  <image source="../../../qdqd/Paint_cans.png" width="21" height="15"/>
+  <image source="Paint_cans.png" width="21" height="15"/>
  </tileset>
  <tileset firstgid="383" name="paint" tilewidth="19" tileheight="37" tilecount="1" columns="1">
-  <image source="../../../qdqd/paint.png" width="19" height="37"/>
+  <image source="paint.png" width="19" height="37"/>
  </tileset>
  <tileset firstgid="384" name="Page_big" tilewidth="20" tileheight="18" tilecount="1" columns="1">
-  <image source="../../../qdqd/Page_big.png" width="20" height="18"/>
+  <image source="Page_big.png" width="20" height="18"/>
  </tileset>
  <tileset firstgid="385" name="chest_big" tilewidth="31" tileheight="22" tilecount="1" columns="1">
-  <image source="../../../qdqd/chest_big.png" width="31" height="22"/>
+  <image source="chest_big.png" width="31" height="22"/>
  </tileset>
  <tileset firstgid="386" name="Page" tilewidth="11" tileheight="10" tilecount="1" columns="1">
-  <image source="../../../qdqd/Page.png" width="11" height="10"/>
+  <image source="Page.png" width="11" height="10"/>
  </tileset>
  <tileset firstgid="387" name="Books1" tilewidth="20" tileheight="30" tilecount="1" columns="1">
-  <image source="../../../qdqd/Books1.png" width="20" height="30"/>
+  <image source="Books1.png" width="20" height="30"/>
  </tileset>
  <tileset firstgid="388" name="Books2" tilewidth="20" tileheight="30" tilecount="1" columns="1">
-  <image source="../../../qdqd/Books2.png" width="20" height="30"/>
+  <image source="Books2.png" width="20" height="30"/>
  </tileset>
  <tileset firstgid="389" name="Books" tilewidth="20" tileheight="23" tilecount="1" columns="1">
-  <image source="../../../qdqd/Books.png" width="20" height="23"/>
+  <image source="Books.png" width="20" height="23"/>
  </tileset>
  <tileset firstgid="390" name="arrow" tilewidth="16" tileheight="12" tilecount="2" columns="2">
   <image source="arrow.png" width="32" height="12"/>
