@@ -329,19 +329,19 @@
   <object id="16" name="spawnpoint2" x="249.776" y="117.227">
    <point/>
   </object>
-  <object id="17" name="spawnpoint" x="126.5" y="117">
+  <object id="17" name="spawnpoint" x="122.5" y="117">
    <point/>
   </object>
-  <object id="18" name="spawnpoint3" x="384" y="119.167">
+  <object id="18" name="spawnpoint3" x="381" y="119.167">
    <point/>
   </object>
-  <object id="19" name="spawnpoint4" x="610" y="120">
+  <object id="19" name="spawnpoint4" x="605.091" y="120.182">
    <point/>
   </object>
-  <object id="20" name="spawnpoint5" x="752.333" y="118.833">
+  <object id="20" name="spawnpoint5" x="746.333" y="118.833">
    <point/>
   </object>
-  <object id="21" name="spawnpoint6" x="879" y="119">
+  <object id="21" name="spawnpoint6" x="873.5" y="118.875">
    <point/>
   </object>
   <object id="22" name="Go to KolyahHouse" x="247.636" y="101.182" width="16.2727" height="8.82386">
@@ -377,6 +377,7 @@
   <object id="32" name="Dialogue" x="267.818" y="161.909" width="24.8636" height="32.9318">
    <properties>
     <property name="activate_counter" type="bool" value="true"/>
+    <property name="avatar" value="danilka"/>
     <property name="dialogue">о привет
 все куда то смотались
 меня оставили следить за шашлыком

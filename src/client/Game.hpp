@@ -16,6 +16,8 @@ private:
     std::unordered_map<std::string, TmxMap*> m_maps;
     std::unordered_map<std::string, Sound> m_sounds;
     std::unordered_map<std::string, Music> m_music;
+    std::unordered_map<std::string, Texture2D> m_notesAvatar;
+
     Player* m_player;
 
     TmxMap* m_map;
@@ -28,6 +30,8 @@ private:
     bool m_showDialog;
     int m_currentPos;
     int m_currentMessage;
+    std::string m_currentNote;
+    
     bool m_counterVisible = false;
     bool m_reconnectingVisible;
 

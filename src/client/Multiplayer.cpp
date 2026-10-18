@@ -75,7 +75,7 @@ void Multiplayer::update() {
 
             case ENET_EVENT_TYPE_DISCONNECT_TIMEOUT:
             case ENET_EVENT_TYPE_DISCONNECT: {
-                printf("Disconnected. Reconnecting...\n");
+                // printf("Disconnected. Reconnecting...\n");
                 m_connected = false;
 
                 enet_peer_reset(m_peer);
@@ -159,5 +159,5 @@ void Multiplayer::mapChanged(std::string const& to) {
 
     sendPacket((char*)&packet, sizeof(packet));
 
-    printf("changed map to %s sent!\n", to.c_str());
+    // printf("changed map to %s sent!\n", to.c_str());
 }

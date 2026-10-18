@@ -36,10 +36,16 @@ void Game::changeMap(std::string const& name, std::string spawnpoint = "spawnpoi
 
     auto prop = findProperty(map, "background_music");
 
+    if (name != "end") {
+        PlaySound(m_sounds["snd_dooropen.wav"]);
+        PlaySound(m_sounds["snd_doorclose.wav"]);
+    }
+
     if (prop != nullptr) {
         m_currentTrack = &m_music[prop->stringValue];
         m_currentTrack->looping = true;
         SetMusicVolume(*m_currentTrack, 0.3f);
+        SeekMusicStream(*m_currentTrack, 0.f);
         PlayMusicStream(*m_currentTrack);
     } else {
         m_currentTrack = nullptr;
@@ -80,7 +86,7 @@ void Game::run() {
 
     m_map = findMap("house");
     
-    Camera2D cam{
+    Camera2D cam {
         .offset = Vector2{1280/2, 720/2},
         .target = Vector2{0.f, 0.f},
         .rotation = 0.f,
@@ -91,7 +97,7 @@ void Game::run() {
     SetMasterVolume(0.5f);
 
     std::string username;
-    if(FileExists("username.txt")) {
+    if (FileExists("username.txt")) {
         username = TextToLower(LoadFileText("username.txt"));
         m_reconnectingVisible = true;
     } else {
@@ -103,6 +109,10 @@ void Game::run() {
     std::string texName = "assets/" + username + ".png";
 
     Texture2D plTex = LoadTexture(texName.c_str());
+
+    m_notesAvatar["note"] = LoadTexture("assets/paper.png");
+    m_notesAvatar["noteinsc"] = LoadTexture("assets/paperinsc.png");
+    m_notesAvatar["danilka"] = LoadTexture("assets/danilka.png");
 
     #define LoadSnd(name) m_sounds[name] = LoadSound("assets/"##name)
 
@@ -131,7 +141,7 @@ void Game::run() {
         m_player->setPoisition(findSpawn(m_map)); // near bed
     }
 
-    while(!WindowShouldClose()) {
+    while (!WindowShouldClose()) {
         if (m_currentTrack != nullptr) {
             UpdateMusicStream(*m_currentTrack);
         }
@@ -222,7 +232,7 @@ void Game::run() {
                 }
                 
                 for (auto pl : players) pl->draw();
-                DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
+                // DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
 
             if (m_reconnectingVisible) { // Connecting state
@@ -251,8 +261,19 @@ void Game::run() {
             }
 
             if (m_showDialog) {
+                float scale = !m_currentNote.empty() ? 2.f : 0;
+
+                static float index = 0;
                 if (m_currentPos < m_dialogMessage[m_currentMessage].length()) {
                     m_currentPos++;
+
+                    if (!m_currentNote.empty() && m_currentPos % 4 == 0) {
+                        index++;
+
+                        if (index > m_notesAvatar.at(m_currentNote).width / 64) {
+                            index = 0;
+                        }
+                    }
                 }
 
                 float padding = 10.f;
@@ -264,6 +285,11 @@ void Game::run() {
                 float y = GetScreenHeight() - height - padding;
                 DrawRectangle(x + thick, y + thick, width - thick, height - thick, BLACK);
                 DrawRectangleLinesEx({x, y, width, height}, thick, WHITE);
+                
+                DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding + 64 * scale, y + thick + padding * 2}, 30, 1.f, WHITE);
+                
+                if (!m_currentNote.empty()) {
+                    auto& tex = m_notesAvatar.at(m_currentNote);
 
                 DrawTextBoxed(
                     m_marksman, 
@@ -272,6 +298,24 @@ void Game::run() {
                     30, 1.f, true, WHITE
                 ); 
                 // DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
+                    if (m_currentPos < m_dialogMessage[m_currentMessage].length()) {
+                        DrawTexturePro(tex, 
+                            {index * 64, index * 64, 64, 64}, 
+                            {x + thick + padding + (64 * scale) / 2, y + thick + padding + 16 + (64 * scale) / 2, 64 * scale, 64 * scale}, 
+                            {(64 * scale) / 2, (64 * scale) / 2}, 
+                            7.f * sin(GetTime() * 1.7f), 
+                            WHITE
+                        );
+                    } else {
+                        DrawTexturePro(tex, 
+                            {0, 0, 64, 64},
+                            {x + thick + padding + (64 * scale) / 2, y + thick + padding + 16 + (64 * scale) / 2, 64 * scale, 64 * scale}, 
+                            {(64 * scale) / 2, (64 * scale) / 2}, 
+                            7.f * sin(GetTime() * 1.7f), 
+                            WHITE
+                        );
+                    }
+                }
 
                 if (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE)) {
                     if (m_currentPos < m_dialogMessage[m_currentMessage].length()) m_currentPos = m_dialogMessage[m_currentMessage].length();
@@ -349,6 +393,16 @@ bool Game::checkInteracts() {
             }
 
             if (strcmp(prop.name, "dialogue") == 0 && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_ENTER)) && !m_showDialog) {
+                m_currentNote.clear();
+                for (int x = 0; x < collided.propertiesLength; x++) {
+                    auto avatar = collided.properties[x];
+
+                    if (strcmp(avatar.name, "avatar") == 0) {
+                        m_currentNote = avatar.stringValue;
+                        break;
+                    }
+                }
+
                 m_currentPos = 0;
                 m_currentMessage = 0;
                 m_dialogMessage.clear();
