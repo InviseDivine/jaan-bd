@@ -108,6 +108,10 @@ void Game::run() {
 
     Texture2D plTex = LoadTexture(texName.c_str());
 
+    m_notesAvatar["note"] = LoadTexture("assets/paper.png");
+    m_notesAvatar["noteinsc"] = LoadTexture("assets/paperinsc.png");
+    m_notesAvatar["danilka"] = LoadTexture("assets/danilka.png");
+
     #define LoadSnd(name) m_sounds[name] = LoadSound("assets/"##name)
 
     LoadSnd("meow.mp3");
@@ -226,7 +230,7 @@ void Game::run() {
                 }
                 
                 for (auto pl : players) pl->draw();
-                DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
+                // DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
 
             if (m_reconnectingVisible) { // Connecting state
@@ -255,8 +259,19 @@ void Game::run() {
             }
 
             if (m_showDialog) {
+                float scale = !m_currentNote.empty() ? 2.f : 0;
+
+                static float index = 0;
                 if (m_currentPos < m_dialogMessage[m_currentMessage].length()) {
                     m_currentPos++;
+
+                    if (!m_currentNote.empty() && m_currentPos % 4 == 0) {
+                        index++;
+
+                        if (index > m_notesAvatar.at(m_currentNote).width / 64) {
+                            index = 0;
+                        }
+                    }
                 }
 
                 float padding = 10.f;
@@ -268,8 +283,19 @@ void Game::run() {
                 float y = GetScreenHeight() - height - padding;
                 DrawRectangle(x + thick, y + thick, width - thick, height - thick, BLACK);
                 DrawRectangleLinesEx({x, y, width, height}, thick, WHITE);
+                
+                DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding + 64 * scale, y + thick + padding * 2}, 30, 1.f, WHITE);
+                
+                if (!m_currentNote.empty()) {
+                    // TODO: Avatar scale
+                    auto& tex = m_notesAvatar.at(m_currentNote);
 
-                DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
+                    if (m_currentPos < m_dialogMessage[m_currentMessage].length()) {
+                        DrawTexturePro(tex, {index * 64, index * 64, 64, 64}, {x + thick + padding, y + thick + padding + 16, 64 * scale, 64 * scale}, {0, 0}, 0, WHITE);
+                    } else {
+                        DrawTexturePro(tex, {0, 0, 64, 64}, {x + thick + padding, y + thick + padding + 16, 64 * scale, 64 * scale}, {0, 0}, 0, WHITE);
+                    }
+                }
 
                 if (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE)) {
                     if (m_currentPos < m_dialogMessage[m_currentMessage].length()) m_currentPos = m_dialogMessage[m_currentMessage].length();
@@ -347,6 +373,16 @@ bool Game::checkInteracts() {
             }
 
             if (strcmp(prop.name, "dialogue") == 0 && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_ENTER)) && !m_showDialog) {
+                m_currentNote.clear();
+                for (int x = 0; x < collided.propertiesLength; x++) {
+                    auto avatar = collided.properties[x];
+
+                    if (strcmp(avatar.name, "avatar") == 0) {
+                        m_currentNote = avatar.stringValue;
+                        break;
+                    }
+                }
+
                 m_currentPos = 0;
                 m_currentMessage = 0;
                 m_dialogMessage.clear();

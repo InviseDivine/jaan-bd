@@ -377,6 +377,7 @@
   <object id="32" name="Dialogue" x="267.818" y="161.909" width="24.8636" height="32.9318">
    <properties>
     <property name="activate_counter" type="bool" value="true"/>
+    <property name="avatar" value="danilka"/>
     <property name="dialogue">о привет
 все куда то смотались
 меня оставили следить за шашлыком
