@@ -34,10 +34,16 @@ void Game::changeMap(std::string const& name, std::string spawnpoint = "spawnpoi
 
     auto prop = findProperty(map, "background_music");
 
+    if (name != "end") {
+        PlaySound(m_sounds["snd_dooropen.wav"]);
+        PlaySound(m_sounds["snd_doorclose.wav"]);
+    }
+
     if (prop != nullptr) {
         m_currentTrack = &m_music[prop->stringValue];
         m_currentTrack->looping = true;
         SetMusicVolume(*m_currentTrack, 0.3f);
+        SeekMusicStream(*m_currentTrack, 0.f);
         PlayMusicStream(*m_currentTrack);
     } else {
         m_currentTrack = nullptr;
@@ -78,7 +84,7 @@ void Game::run() {
 
     m_map = findMap("house");
     
-    Camera2D cam{
+    Camera2D cam {
         .offset = Vector2{1280/2, 720/2},
         .target = Vector2{0.f, 0.f},
         .rotation = 0.f,
@@ -89,7 +95,7 @@ void Game::run() {
     SetMasterVolume(0.5f);
 
     std::string username;
-    if(FileExists("username.txt")) {
+    if (FileExists("username.txt")) {
         username = TextToLower(LoadFileText("username.txt"));
         m_reconnectingVisible = true;
     } else {
@@ -129,7 +135,7 @@ void Game::run() {
         m_player->setPoisition(findSpawn(m_map)); // near bed
     }
 
-    while(!WindowShouldClose()) {
+    while (!WindowShouldClose()) {
         if (m_currentTrack != nullptr) {
             UpdateMusicStream(*m_currentTrack);
         }
