@@ -285,19 +285,18 @@ void Game::run() {
                 float y = GetScreenHeight() - height - padding;
                 DrawRectangle(x + thick, y + thick, width - thick, height - thick, BLACK);
                 DrawRectangleLinesEx({x, y, width, height}, thick, WHITE);
-                
-                DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding + 64 * scale, y + thick + padding * 2}, 30, 1.f, WHITE);
-                
-                if (!m_currentNote.empty()) {
-                    auto& tex = m_notesAvatar.at(m_currentNote);
+
+                Vector2 pos = {x + thick + padding + 64 * scale, y + thick + padding * 2};
 
                 DrawTextBoxed(
                     m_marksman, 
                     TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), 
-                    {x + thick + padding, y + thick + padding, width - thick - padding, height - thick - padding}, 
+                    {pos.x, pos.y, width - thick - padding * 2 - 64 * scale, height - thick - padding * 2}, 
                     30, 1.f, true, WHITE
                 ); 
-                // DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
+                
+                if (!m_currentNote.empty()) {
+                    auto& tex = m_notesAvatar.at(m_currentNote);
                     if (m_currentPos < m_dialogMessage[m_currentMessage].length()) {
                         DrawTexturePro(tex, 
                             {index * 64, index * 64, 64, 64}, 
@@ -317,7 +316,7 @@ void Game::run() {
                     }
                 }
 
-                if (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE)) {
+                if ((IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE)) && m_currentPos > 4) {
                     if (m_currentPos < m_dialogMessage[m_currentMessage].length()) m_currentPos = m_dialogMessage[m_currentMessage].length();
                     else if (m_currentPos == m_dialogMessage[m_currentMessage].length()) {
                         m_currentMessage++;
