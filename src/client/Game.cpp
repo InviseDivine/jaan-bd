@@ -9,6 +9,8 @@
 #include <RemotePlayer.hpp>
 #include <Multiplayer.hpp>
 
+#include <utils.h>
+
 bool Game::loadMap(std::string const& name) {
     auto filename = "assets/" + name + ".tmx";
     auto map = LoadTMX(filename.c_str());
@@ -56,7 +58,7 @@ void Game::run() {
     SetTargetFPS(60);
     InitAudioDevice();
 
-    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!";
+    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!.,()[]{}?/\\|-+=";
     int len = 0;
     int* codepoints = LoadCodepoints(codepointsText.c_str(), &len);
 
@@ -263,7 +265,13 @@ void Game::run() {
                 DrawRectangle(x + thick, y + thick, width - thick, height - thick, BLACK);
                 DrawRectangleLinesEx({x, y, width, height}, thick, WHITE);
 
-                DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
+                DrawTextBoxed(
+                    m_marksman, 
+                    TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), 
+                    {x + thick + padding, y + thick + padding, width - thick - padding, height - thick - padding}, 
+                    30, 1.f, true, WHITE
+                ); 
+                // DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding, y + thick + padding}, 30, 1.f, WHITE);
 
                 if (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE)) {
                     if (m_currentPos < m_dialogMessage[m_currentMessage].length()) m_currentPos = m_dialogMessage[m_currentMessage].length();
