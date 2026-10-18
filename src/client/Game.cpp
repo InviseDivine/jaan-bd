@@ -287,13 +287,24 @@ void Game::run() {
                 DrawTextEx(m_marksman, TextSubtext(m_dialogMessage[m_currentMessage].c_str(), 0, m_currentPos), {x + thick + padding + 64 * scale, y + thick + padding * 2}, 30, 1.f, WHITE);
                 
                 if (!m_currentNote.empty()) {
-                    // TODO: Avatar scale
                     auto& tex = m_notesAvatar.at(m_currentNote);
 
                     if (m_currentPos < m_dialogMessage[m_currentMessage].length()) {
-                        DrawTexturePro(tex, {index * 64, index * 64, 64, 64}, {x + thick + padding, y + thick + padding + 16, 64 * scale, 64 * scale}, {0, 0}, 0, WHITE);
+                        DrawTexturePro(tex, 
+                            {index * 64, index * 64, 64, 64}, 
+                            {x + thick + padding + (64 * scale) / 2, y + thick + padding + 16 + (64 * scale) / 2, 64 * scale, 64 * scale}, 
+                            {(64 * scale) / 2, (64 * scale) / 2}, 
+                            7.f * sin(GetTime() * 1.7f), 
+                            WHITE
+                        );
                     } else {
-                        DrawTexturePro(tex, {0, 0, 64, 64}, {x + thick + padding, y + thick + padding + 16, 64 * scale, 64 * scale}, {0, 0}, 0, WHITE);
+                        DrawTexturePro(tex, 
+                            {0, 0, 64, 64},
+                            {x + thick + padding + (64 * scale) / 2, y + thick + padding + 16 + (64 * scale) / 2, 64 * scale, 64 * scale}, 
+                            {(64 * scale) / 2, (64 * scale) / 2}, 
+                            7.f * sin(GetTime() * 1.7f), 
+                            WHITE
+                        );
                     }
                 }
 
