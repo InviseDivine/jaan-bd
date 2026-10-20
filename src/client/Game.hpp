@@ -42,6 +42,12 @@ private:
     std::string m_username;
 
     Music* m_currentTrack = nullptr;
+
+    int m_hp = 20;
+    int m_damageCooldown = 0;
+    
+    bool m_showPlayers;
+    Camera2D cam;
 public:
     Game(Game&&) = delete;
 
@@ -52,6 +58,7 @@ public:
 
     void run();
 
+    int getDamageCooldown() { return m_damageCooldown; }
     bool addRemotePlayer(AddRemotePlayerPacket& packet);
     void updateRemotePlayer(unsigned int id, PlayerState& state);
     void removeRemotePlayer(unsigned int id);

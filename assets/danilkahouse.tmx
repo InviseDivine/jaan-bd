@@ -82,6 +82,11 @@
     <object id="1" x="2" y="0" width="11" height="15"/>
    </objectgroup>
   </tile>
+  <tile id="98">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="3" y="0" width="10" height="15"/>
+   </objectgroup>
+  </tile>
   <tile id="100">
    <objectgroup draworder="index" id="2">
     <object id="1" x="4" y="0" width="12" height="15"/>
@@ -127,6 +132,26 @@
    </objectgroup>
   </tile>
   <tile id="74">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="87">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="88">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="89">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="90">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="0" width="16" height="16"/>
    </objectgroup>
@@ -184,15 +209,229 @@
  <tileset firstgid="384" source="candle.tsx"/>
  <tileset firstgid="386" name="Long table" tilewidth="16" tileheight="16" tilecount="25" columns="5">
   <image source="Long table.png" width="80" height="80"/>
+  <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16"/>
+    <object id="3" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="1">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="2">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="3">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="4">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="5">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="6">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="9">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="10">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="14">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="15">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="19">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="20">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="21">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="9"/>
+   </objectgroup>
+  </tile>
+  <tile id="22">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="9"/>
+   </objectgroup>
+  </tile>
+  <tile id="23">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="9"/>
+   </objectgroup>
+  </tile>
+  <tile id="24">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <tileset firstgid="411" name="Rubiks cubes" tilewidth="16" tileheight="16" tilecount="25" columns="5">
   <image source="Rubiks cubes.png" width="80" height="80"/>
+  <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="13" y="5" width="3" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="1">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="5" width="16" height="11"/>
+    <object id="2" x="0" y="5" width="16" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="2">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="5" width="13" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="5">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="4" y="0" width="12" height="16"/>
+    <object id="2" x="4" y="0" width="12" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="6">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="7">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="13" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="10">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="11">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="12">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="13" height="16"/>
+    <object id="2" x="0" y="0" width="13" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="15">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="16">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="2" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="17">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="13" height="8"/>
+   </objectgroup>
+  </tile>
+  <tile id="20">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="12" y="0" width="4" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="21">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="12" height="11"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <tileset firstgid="436" name="Bookcase" tilewidth="16" tileheight="16" tilecount="4" columns="2">
   <image source="Bookcase.png" width="32" height="32"/>
+  <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="4" y="2" width="12" height="14"/>
+   </objectgroup>
+  </tile>
+  <tile id="1">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="2" width="12" height="14"/>
+   </objectgroup>
+  </tile>
+  <tile id="2">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="4" y="0" width="12" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="3">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="12" height="16"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <tileset firstgid="440" name="Couch" tilewidth="16" tileheight="16" tilecount="6" columns="3">
   <image source="Couch.png" width="48" height="32"/>
+  <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="9" y="5" width="7" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="1">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="4" width="16" height="12"/>
+   </objectgroup>
+  </tile>
+  <tile id="2">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="4" width="8" height="12"/>
+   </objectgroup>
+  </tile>
+  <tile id="3">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="9" y="0" width="7" height="8"/>
+   </objectgroup>
+  </tile>
+  <tile id="4">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="7"/>
+   </objectgroup>
+  </tile>
+  <tile id="5">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="8" height="8"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <tileset firstgid="446" name="Mirror" tilewidth="16" tileheight="16" tilecount="2" columns="1">
   <image source="Mirror.png" width="16" height="32"/>

@@ -35,10 +35,17 @@ void Game::changeMap(std::string const& name, std::string spawnpoint = "spawnpoi
     auto map = findMap(name);
 
     auto prop = findProperty(map, "background_music");
+    auto zoom = findProperty(map, "zoom");
+
+    if (zoom != nullptr && zoom->floatValue != 0 && m_username == "jaan") {
+        cam.zoom = zoom->floatValue;
+    }
 
     if (name != "end") {
         PlaySound(m_sounds["snd_dooropen.wav"]);
         PlaySound(m_sounds["snd_doorclose.wav"]);
+    } else {
+        m_showPlayers = true;
     }
 
     if (prop != nullptr) {
@@ -73,20 +80,21 @@ void Game::run() {
     UnloadCodepoints(codepoints);
 
     m_candle = LoadTexture("assets/candle.png");
-
-    loadMap("untitled");
+    
     loadMap("house");
     loadMap("kolyahhouse");
     loadMap("invdivhouse");
     loadMap("fullharmonyhouse");
-    loadMap("danilkahouse");
     loadMap("delhouse");
+    loadMap("danilkahouse");
 
     loadMap("end");
+    loadMap("untitled");
+    loadMap("basement");
 
     m_map = findMap("house");
     
-    Camera2D cam {
+    cam = {
         .offset = Vector2{1280/2, 720/2},
         .target = Vector2{0.f, 0.f},
         .rotation = 0.f,
@@ -100,9 +108,11 @@ void Game::run() {
     if (FileExists("username.txt")) {
         username = TextToLower(LoadFileText("username.txt"));
         m_reconnectingVisible = true;
+        m_showPlayers = true;
     } else {
         username = "jaan";
         m_reconnectingVisible = false;
+        m_showPlayers = false;
     }
 
     m_username = username;
@@ -148,10 +158,25 @@ void Game::run() {
 
         timer.advanceTime();
 
+        if (IsKeyPressed(KEY_R) && m_username != "jaan") {
+            changeMap("end");
+        }
+
         if (!m_showDialog) {
             for (int i = 0; i < timer.getTicks(); i++) {
                 m_player->onTick();
             }
+        }
+        
+        if (m_damageCooldown > 0) {
+            m_damageCooldown -= 5;
+        } else {
+            m_damageCooldown = 0;
+        }
+
+        if (m_hp <= 0) {
+            m_hp = 20;
+            m_player->setPoisition(findSpawn(m_map));
         }
 
         Vector2 position = m_player->getPosition();
@@ -184,8 +209,10 @@ void Game::run() {
             players.clear();
             players.push_back(m_player);
 
-            for (auto& [id, remote] : m_remotes) {
-                players.push_back(remote);
+            if (m_showPlayers) {
+                for (auto& [id, remote] : m_remotes) {
+                    players.push_back(remote);
+                }
             }
 
             if (players.size() > 1) {
@@ -232,7 +259,7 @@ void Game::run() {
                 }
                 
                 for (auto pl : players) pl->draw();
-                // DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
+                DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
 
             if (m_reconnectingVisible) { // Connecting state
@@ -330,7 +357,7 @@ void Game::run() {
                 rlPushMatrix();
                 rlScalef(3.f, 3.f, 0.f);
                 DrawTextureRec(m_candle, {0, 0, 16, 12}, {10, 10}, WHITE);
-                DrawText(TextFormat("%d/5", m_collectedCandles), 25, 12, 10, WHITE);
+                DrawText(TextFormat("%d/6", m_collectedCandles), 25, 12, 10, WHITE);
                 rlPopMatrix();
             }
         EndDrawing();
@@ -375,7 +402,7 @@ bool Game::checkInteracts() {
 
             if (strcmp(prop.name, "transition") == 0) {
                 if (strcmp(prop.stringValue, "end") == 0) {
-                    if (m_username == "jaan" && m_collectedCandles < 5) return false;
+                    if (m_username == "jaan" && m_collectedCandles < 6) return false;
                 }
 
                 for (int x = 0; x < collided.propertiesLength; x++) {
@@ -417,7 +444,7 @@ bool Game::checkInteracts() {
                 return true;
             }
 
-            if (strcmp(prop.name, "candle") == 0) {
+            if (strcmp(prop.name, "candle") == 0 && m_username == "jaan") {
                 m_collectedCandles++;
                 
                 for (int i = 0; i < objectLayer->exact.objectGroup.objectsLength; i++) {
@@ -441,7 +468,14 @@ bool Game::checkInteracts() {
             if (strcmp(prop.name, "play_sound") == 0 && (IsKeyPressed(KEY_E) || IsKeyPressed(KEY_ENTER))) {
                 PlaySound(m_sounds[prop.stringValue]);
                 continue;
-            } 
+            }
+
+            if (strcmp(prop.name, "damage") == 0 && m_username == "jaan" && m_damageCooldown == 0) {
+                m_damageCooldown = 3 * 60;
+                m_hp -= prop.intValue;
+                printf("damage! \n");
+                break;
+            }
         }
     }
 
@@ -450,7 +484,6 @@ bool Game::checkInteracts() {
 
 void Game::verifyCollisionX() {
     TmxObject collided;
-
     if (CheckCollisionTMXTileLayersRec(m_map, m_map->layers, m_map->layersLength, m_player->m_bounds, &collided)) {
         if (m_player->m_speed.x > 0)
             m_player->m_bounds.x = collided.aabb.x - m_player->m_bounds.width;

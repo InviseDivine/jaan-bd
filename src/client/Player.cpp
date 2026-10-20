@@ -18,6 +18,11 @@ void Player::onTick() {
     if (IsKeyDown(KEY_A)) m_speed.x -= 1;
     if (IsKeyDown(KEY_D)) m_speed.x += 1;
 
+    if (game.getDamageCooldown()) {
+        m_speed.x *= 0.5f;
+        m_speed.y *= 0.5f;
+    }
+
     m_bounds.x += m_speed.x * 0.7f;
     game.verifyCollisionX();
 
@@ -78,11 +83,20 @@ void Player::onTick() {
 
 void Player::draw() {
     int line = (m_direction > 2) ? 2 : m_direction;
+    auto& game = Game::get();
+    static float m_lastHurtTime = -10.f;
 
+    if (game.getDamageCooldown() >= 175) m_lastHurtTime = GetTime();
+
+    float t = m_lastHurtTime + 1.f - GetTime();
+
+    if (t < 0) t = 0;
+
+    Color tint = {255, 255 - 128 * t, 255 - 255 * t, 255};
     Rectangle source = {m_frame * 20.f, line * 32.f, 20, 32};
     Rectangle dest = {m_bounds.x, m_bounds.y, 20, 32};
 
     if (m_direction == RIGHT) source.width *= -1.f;
 
-    DrawTexturePro(m_tex, source, dest, Vector2{0, dest.height - m_bounds.height}, 0.f, WHITE);
+    DrawTexturePro(m_tex, source, dest, Vector2{2.5f, dest.height - m_bounds.height}, 0.f, tint);
 }
