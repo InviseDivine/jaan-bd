@@ -62,7 +62,7 @@ void Game::run() {
     SetTargetFPS(60);
     InitAudioDevice();
 
-    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!";
+    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!(),.";
     int len = 0;
     int* codepoints = LoadCodepoints(codepointsText.c_str(), &len);
 
