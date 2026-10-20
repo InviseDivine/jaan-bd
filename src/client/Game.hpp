@@ -28,7 +28,7 @@ private:
 
     std::vector<std::string> m_dialogMessage;
     bool m_showDialog;
-    int m_currentPos;
+    int m_currentPos = 0;
     int m_currentMessage;
     std::string m_currentNote;
     
