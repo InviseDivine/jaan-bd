@@ -316,7 +316,7 @@ void Game::run() {
                     }
                 }
 
-                if ((IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE)) && m_currentPos > 4) {
+                if ((IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE)) && m_currentPos > 1) {
                     if (m_currentPos < m_dialogMessage[m_currentMessage].length()) m_currentPos = m_dialogMessage[m_currentMessage].length();
                     else if (m_currentPos == m_dialogMessage[m_currentMessage].length()) {
                         m_currentMessage++;
