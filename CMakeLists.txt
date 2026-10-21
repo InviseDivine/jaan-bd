@@ -50,8 +50,14 @@ file(GLOB Shared
     ${CMAKE_SOURCE_DIR}/src/shared/*.cpp
 )
 
-add_executable(${PROJECT_NAME} ${Client} ${Shared})
+add_executable(${PROJECT_NAME} WIN32 ${Client} ${Shared})
 add_executable(${PROJECT_NAME}-server ${Server} ${Shared})
+
+if(MSVC)
+    target_link_options(${PROJECT_NAME} PRIVATE
+        "/ENTRY:mainCRTStartup"
+    )
+endif()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib enet_static)
 target_include_directories(${PROJECT_NAME} PUBLIC
