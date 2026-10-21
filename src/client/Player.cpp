@@ -98,5 +98,5 @@ void Player::draw() {
 
     if (m_direction == RIGHT) source.width *= -1.f;
 
-    DrawTexturePro(m_tex, source, dest, Vector2{2.5f, dest.height - m_bounds.height}, 0.f, tint);
+    DrawTexturePro(m_tex, source, dest, Vector2{3.75f, dest.height - m_bounds.height}, 0.f, tint);
 }
