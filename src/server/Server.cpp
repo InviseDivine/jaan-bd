@@ -116,7 +116,7 @@ void Server::clientLogined(Client* cl) {
     }
 
     // broadcast all players to new player
-    for (auto& [us, client] : m_clients) {
+    for (auto& [id, client] : m_clients) {
         if (client == cl) continue;
 
         if (client->getMap() != cl->getMap()) continue;

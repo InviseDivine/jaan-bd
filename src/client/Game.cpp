@@ -256,7 +256,7 @@ void Game::run() {
 
     auto& mult = Multiplayer::get();
 
-    mult.init(username, "localhost", 7777);
+    mult.init(username, "78.36.200.207", 7777);
     m_player = new Player(plTex);
     Timer timer(60.f);
 
