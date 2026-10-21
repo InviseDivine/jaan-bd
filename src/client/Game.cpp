@@ -417,7 +417,7 @@ void Game::run() {
                 }
                     
                 for (auto pl : players) pl->draw();
-                DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
+                // DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
 
             if (m_reconnectingVisible) { // Connecting state
