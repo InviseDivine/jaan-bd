@@ -23,6 +23,7 @@ public:
     bool connected() const { return m_connected; }
 
     void mapChanged(std::string const& to);
+    void sendMessage(std::string message);
 private:
     ENetHost* m_client;
     ENetPeer* m_peer;

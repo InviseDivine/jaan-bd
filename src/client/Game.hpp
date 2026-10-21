@@ -25,6 +25,7 @@ private:
     Game() = default;
 
     std::vector<std::string> m_messages;
+    std::string m_message;
 
     std::vector<std::string> m_dialogMessage;
     bool m_showDialog;
@@ -48,6 +49,9 @@ private:
     
     bool m_showPlayers;
     Camera2D cam;
+
+    bool m_showChat;
+
 public:
     Game(Game&&) = delete;
 

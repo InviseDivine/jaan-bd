@@ -161,3 +161,10 @@ void Multiplayer::mapChanged(std::string const& to) {
 
     // printf("changed map to %s sent!\n", to.c_str());
 }
+
+void Multiplayer::sendMessage(std::string message) {
+    SendMessagePacket packet;
+    packet.messageSize = message.size();
+    memcpy(packet.message, message.data(), message.size());
+    sendPacket((char*)&packet, sizeof(packet));
+}

@@ -81,6 +81,8 @@ void Game::run() {
 
     m_candle = LoadTexture("assets/candle.png");
     
+    SetExitKey(KEY_NULL);
+
     loadMap("house");
     loadMap("kolyahhouse");
     loadMap("invdivhouse");
@@ -135,7 +137,8 @@ void Game::run() {
     LoadMsc("temple_of_magics.mp3");
     LoadMsc("avril14.mp3");
     LoadMsc("californication.mp3");
-
+    LoadMsc("wackyloop.mp3");
+    LoadMsc("alberto_balsalm.mp3");
 
     if (!plTex.id) {
         TraceLog(LOG_FATAL, "Failed to load your skin");
@@ -156,13 +159,44 @@ void Game::run() {
             UpdateMusicStream(*m_currentTrack);
         }
 
+        if (m_showChat) {
+            if (IsKeyPressed(KEY_ESCAPE)) m_showChat = false;
+            int key = GetCharPressed();
+
+            // Check if more characters have been pressed on the same frame
+            while (key > 0) {
+                int size = 0;
+                m_message.append(CodepointToUTF8(key, &size));
+
+                key = GetCharPressed(); // Check next character in the queue
+            }
+
+            if (IsKeyPressedRepeat(KEY_BACKSPACE) || IsKeyPressed(KEY_BACKSPACE)) {
+                if (m_message.size() != 0) {
+                    int size = 0;
+                    auto codepoint = GetCodepointPrevious(m_message.data() + m_message.size(), &size);
+
+                    m_message = m_message.substr(0, m_message.size() - size);
+                }
+            }
+
+            if (IsKeyPressed(KEY_ENTER)) {
+                auto& mp = Multiplayer::get();
+
+                mp.sendMessage(m_message);
+                m_message.clear();
+                m_showChat = false;
+            }
+        }
         timer.advanceTime();
+
+        if (IsKeyPressed(KEY_T) && m_showPlayers && !m_showChat) m_showChat ^= 1;
 
         if (IsKeyPressed(KEY_R) && m_username != "jaan") {
             changeMap("end");
         }
 
-        if (!m_showDialog) {
+        if (!m_showDialog && !m_showChat) {
             for (int i = 0; i < timer.getTicks(); i++) {
                 m_player->onTick();
             }
@@ -360,7 +394,24 @@ void Game::run() {
                 DrawText(TextFormat("%d/6", m_collectedCandles), 25, 12, 10, WHITE);
                 rlPopMatrix();
             }
-        EndDrawing();
+
+            if (m_showPlayers) {
+                for (float i = 0; i < m_messages.size(); i++) {
+                    DrawTextEx(m_marksman, m_messages.at(i).c_str(), {0, i * 27}, 25.f, 1.f, WHITE);
+                }
+            }
+            
+            if (m_showChat && m_showPlayers) {
+                float height = 50.f;
+                float width = GetScreenWidth();
+                float y = GetScreenHeight() - height;
+                float padding = 5.f;
+
+                DrawRectangle(0, y, width, height, {0, 0, 0, 130});
+                DrawTextEx(m_marksman, m_message.c_str(), {padding, (height - 25) / 2 + y}, 25.f, 1.f, WHITE);
+            }
+
+            EndDrawing();
     }
 }
 
