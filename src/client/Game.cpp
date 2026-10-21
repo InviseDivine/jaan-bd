@@ -15,7 +15,6 @@
 #include "rres.h"
 #define RRES_RAYLIB_IMPLEMENTATION
 #include "rres-raylib.h"
-#include "untitled.h"
 
 rresCentralDir dir;
 
@@ -24,7 +23,7 @@ rresCentralDir dir;
 const char* LoadTextFilePacked(const char* path) {
     rresResourceChunk chunk = { 0 };
 
-    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, GetFileName(path)));
     int result = UnpackResourceChunk(&chunk);
 
     if (result == 0) {
@@ -41,7 +40,7 @@ const char* LoadTextFilePacked(const char* path) {
 Texture2D LoadTexturePacked(const char* path) {
     rresResourceChunk chunk = { 0 };
 
-    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, GetFileName(path)));
     int result = UnpackResourceChunk(&chunk);
     Texture2D ret = {};
 
@@ -64,7 +63,7 @@ Texture2D LoadTexturePacked(const char* path) {
 Font LoadFontPacked(const char* path, int fontSize, int* codepoint, int codepointLen) {
     rresResourceChunk chunk = { 0 };
 
-    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, GetFileName(path)));
     int result = UnpackResourceChunk(&chunk);
     Font ret = { 0 };
 
@@ -80,7 +79,7 @@ Font LoadFontPacked(const char* path, int fontSize, int* codepoint, int codepoin
 Sound LoadSoundPacked(const char* path) {
     rresResourceChunk chunk = { 0 };
 
-    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, GetFileName(path)));
     int result = UnpackResourceChunk(&chunk);
     Sound ret = { 0 };
 
@@ -100,7 +99,7 @@ Sound LoadSoundPacked(const char* path) {
 Music LoadMusicStreamPacked(const char* path) {
     rresResourceChunk chunk = { 0 };
 
-    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, GetFileName(path)));
     int result = UnpackResourceChunk(&chunk);
     Music ret = { 0 };
 
@@ -116,8 +115,8 @@ Music LoadMusicStreamPacked(const char* path) {
 }
 
 bool Game::loadMap(std::string const& name) {
-    auto filename = /* "assets/" + */ name + ".tmx";
-    auto map = LoadTMXFromMemory(LoadTextFilePacked(filename.c_str()), "");
+    auto filename = "assets/" + name + ".tmx";
+    auto map = LoadTMX(filename.c_str());
 
     if (!map) return false;
 
@@ -184,7 +183,7 @@ void Game::run() {
     int len = 0;
     int* codepoints = LoadCodepoints(codepointsText.c_str(), &len);
 
-    m_marksman = LoadFontPacked("marksman.otf", 30, codepoints, len);
+    m_marksman = LoadFontPacked("Marksman.otf", 30, codepoints, len);
     SetTextureFilter(m_marksman.texture, TEXTURE_FILTER_POINT);
     UnloadCodepoints(codepoints);
 
