@@ -100,6 +100,8 @@ void Multiplayer::update() {
 
                 std::copy(map->fileName, map->fileName + TextFindIndex(map->fileName, ".tmx")-1, loginPacket.map);
 
+                mapChanged(game.getCurrentMap());
+                
                 SEND_PACKET(loginPacket);
                 break;
         }

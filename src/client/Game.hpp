@@ -38,7 +38,7 @@ private:
 
     Font m_marksman;
     Texture2D m_candle;
-    int m_collectedCandles;
+    int m_collectedCandles = 6;
 
     std::string m_username;
 
@@ -52,7 +52,11 @@ private:
 
     bool m_showChat;
 
+    bool danilkaShow = false;
+    std::string m_currMap = "";
 public:
+    std::string getCurrentMap() { return m_currMap; }
+
     Game(Game&&) = delete;
 
     static Game& get() {
