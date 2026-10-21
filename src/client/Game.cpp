@@ -11,9 +11,111 @@
 
 #include <utils.h>
 
+#define RRES_IMPLEMENTATION
+#include "rres.h"
+#define RRES_RAYLIB_IMPLEMENTATION
+#include "rres-raylib.h"
+
+rresCentralDir dir;
+
+#define RRES_FILENAME "resources.rres"
+
+const char* LoadTextFilePacked(const char* path) {
+    rresResourceChunk chunk = { 0 };
+
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    int result = UnpackResourceChunk(&chunk);
+
+    if (result == 0) {
+        unsigned int dataSize = 0;
+        const char* data = (const char*)LoadDataFromResource(chunk, &dataSize);
+        return data;
+    }
+
+    return nullptr;
+}
+
+
+Texture2D LoadTexturePacked(const char* path) {
+    rresResourceChunk chunk = { 0 };
+
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    int result = UnpackResourceChunk(&chunk);
+    Texture2D ret = {};
+
+    if (result == 0) {
+        unsigned int dataSize = 0;
+        const unsigned char* data = (const unsigned char*)LoadDataFromResource(chunk, &dataSize);
+        Image image = LoadImageFromMemory(GetFileExtension(path), data, dataSize);
+
+        if (image.data != NULL) {
+            ret = LoadTextureFromImage(image);
+            UnloadImage(image);
+        }
+    }
+
+    rresUnloadResourceChunk(chunk);
+
+    return ret;
+}
+
+Font LoadFontPacked(const char* path, int fontSize, int* codepoint, int codepointLen) {
+    rresResourceChunk chunk = { 0 };
+
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    int result = UnpackResourceChunk(&chunk);
+    Font ret = { 0 };
+
+    if (result == 0) {
+        unsigned int dataSize = 0;
+        const unsigned char* data = (const unsigned char*)LoadDataFromResource(chunk, &dataSize);
+        ret = LoadFontFromMemory(GetFileExtension(path), data, dataSize, fontSize, codepoint, codepointLen); 
+    }
+
+    return ret;
+}
+
+Sound LoadSoundPacked(const char* path) {
+    rresResourceChunk chunk = { 0 };
+
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    int result = UnpackResourceChunk(&chunk);
+    Sound ret = { 0 };
+
+    if (result == 0) {
+        unsigned int dataSize = 0;
+        const unsigned char* data = (const unsigned char*)LoadDataFromResource(chunk, &dataSize);
+        Wave wave = LoadWaveFromMemory(GetFileExtension(path), data, dataSize);
+        ret = LoadSoundFromWave(wave);
+        UnloadWave(wave); 
+    }
+
+    rresUnloadResourceChunk(chunk);
+
+    return ret;
+}
+
+Music LoadMusicStreamPacked(const char* path) {
+    rresResourceChunk chunk = { 0 };
+
+    chunk = rresLoadResourceChunk(RRES_FILENAME, rresGetResourceId(dir, path));
+    int result = UnpackResourceChunk(&chunk);
+    Music ret = { 0 };
+
+    if (result == 0) {
+        unsigned int dataSize = 0;
+        const unsigned char* data = (const unsigned char*)LoadDataFromResource(chunk, &dataSize);
+        ret = LoadMusicStreamFromMemory(GetFileExtension(path), data, dataSize);
+    }
+
+    rresUnloadResourceChunk(chunk);
+
+    return ret;
+}
+
 bool Game::loadMap(std::string const& name) {
-    auto filename = "assets/" + name + ".tmx";
-    auto map = LoadTMX(filename.c_str());
+    auto filename = /* "assets/" + */ name + ".tmx";
+    auto map = LoadTMXFromMemory(LoadTextFilePacked(filename.c_str()), "");
 
     if (!map) return false;
 
@@ -71,15 +173,20 @@ void Game::run() {
     SetTargetFPS(60);
     InitAudioDevice();
 
+    dir = rresLoadCentralDirectory("resources.rres");
+
+    SetGetFileTextCallbackTMX(LoadTextFilePacked);
+    SetLoadTextureCallbackTMX(LoadTexturePacked);
+
     std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!.,()[]{}?/\\|-+=<>";
     int len = 0;
     int* codepoints = LoadCodepoints(codepointsText.c_str(), &len);
 
-    m_marksman = LoadFontEx("assets/marksman.otf", 30, codepoints, len);
+    m_marksman = LoadFontPacked("marksman.otf", 30, codepoints, len);
     SetTextureFilter(m_marksman.texture, TEXTURE_FILTER_POINT);
     UnloadCodepoints(codepoints);
 
-    m_candle = LoadTexture("assets/candle.png");
+    m_candle = LoadTexturePacked("candle.png");
     
     SetExitKey(KEY_NULL);
 
@@ -118,21 +225,21 @@ void Game::run() {
     }
 
     m_username = username;
-    std::string texName = "assets/" + username + ".png";
+    std::string texName = /* "assets/" + */ username + ".png";
 
-    Texture2D plTex = LoadTexture(texName.c_str());
+    Texture2D plTex = LoadTexturePacked(texName.c_str());
 
-    m_notesAvatar["note"] = LoadTexture("assets/paper.png");
-    m_notesAvatar["noteinsc"] = LoadTexture("assets/paperinsc.png");
-    m_notesAvatar["danilka"] = LoadTexture("assets/danilka.png");
+    m_notesAvatar["note"] = LoadTexturePacked("paper.png");
+    m_notesAvatar["noteinsc"] = LoadTexturePacked("paperinsc.png");
+    m_notesAvatar["danilka"] = LoadTexturePacked("danilka.png");
 
-    #define LoadSnd(name) m_sounds[name] = LoadSound("assets/"##name)
+    #define LoadSnd(name) m_sounds[name] = LoadSoundPacked(##name)
 
     LoadSnd("meow.mp3");
     LoadSnd("snd_doorclose.wav");
     LoadSnd("snd_dooropen.wav");
 
-    #define LoadMsc(name) m_music[name] = LoadMusicStream("assets/"##name)
+    #define LoadMsc(name) m_music[name] = LoadMusicStreamPacked(##name)
 
     LoadMsc("temple_of_magics.mp3");
     LoadMsc("avril14.mp3");
@@ -417,11 +524,11 @@ void Game::run() {
 
 bool Game::addRemotePlayer(AddRemotePlayerPacket& packet) {
     std::string username = packet.username;
-    std::string filename = "assets/" + std::string(TextToLower(packet.username)) + ".png";
+    std::string filename = /* "assets/" + */ std::string(TextToLower(packet.username)) + ".png";
 
     TraceLog(LOG_INFO, "Loading skin %s", filename.c_str());
 
-    Texture2D skin = LoadTexture(filename.c_str());
+    Texture2D skin = LoadTexturePacked(filename.c_str());
 
     if (skin.id == 0) return false;
 

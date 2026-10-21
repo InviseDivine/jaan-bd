@@ -86,4 +86,6 @@ public:
     TmxProperty* findProperty(TmxMap* map, std::string const& name);
     
     void addMessage(std::string message) { m_messages.push_back(message); }
+
+    
 };
