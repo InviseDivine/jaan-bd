@@ -92,8 +92,15 @@ void Player::draw() {
 
     if (t < 0) t = 0;
 
+    int frame = m_frame;
+
+    if (m_cake) {
+        frame += 4;
+    }
+
+
     Color tint = {255, 255 - 128 * t, 255 - 255 * t, 255};
-    Rectangle source = {m_frame * 20.f, line * 32.f, 20, 32};
+    Rectangle source = {frame * 20.f, line * 32.f, 20, 32};
     Rectangle dest = {m_bounds.x, m_bounds.y, 20, 32};
 
     if (m_direction == RIGHT) source.width *= -1.f;

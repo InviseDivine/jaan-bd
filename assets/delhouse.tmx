@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="19">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="12" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="20">
  <properties>
   <property name="background_music" value="alberto_balsalm.mp3"/>
  </properties>
@@ -297,6 +297,14 @@
   <object id="18" x="206.325" y="130.591" width="19.1001" height="17.1012">
    <properties>
     <property name="candle" value=""/>
+   </properties>
+  </object>
+  <object id="19" name="Dialogue" x="44" y="30.7273" width="39.9205" height="40.1932">
+   <properties>
+    <property name="avatar" value="note"/>
+    <property name="dialogue">Привет Джаан
+Поздравляю
+Пока</property>
    </properties>
   </object>
  </objectgroup>

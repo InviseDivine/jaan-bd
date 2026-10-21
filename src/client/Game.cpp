@@ -247,6 +247,7 @@ void Game::run() {
     LoadMsc("californication.mp3");
     LoadMsc("wackyloop.mp3");
     LoadMsc("alberto_balsalm.mp3");
+    LoadMsc("stardewvibes.mp3");
 
     if (!plTex.id) {
         TraceLog(LOG_FATAL, "Failed to load your skin");
@@ -370,36 +371,41 @@ void Game::run() {
         ClearBackground(BLACK);
             BeginMode2D(cam);
                 DrawTMX(m_map, &cam, nullptr, 0, 0, WHITE);
-                for (int i = 0; i < m_collectedCandles; i++) {
-                    // SYKA CHTO DELAET ETOT TIP?!
-                    switch(i) {
-                        case 0: {
-                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {474, 299 - 9}, WHITE);
-                            break;
-                        }
 
-                        case 1: {
-                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {483, 299 - 9}, WHITE);
-                            break;
-                        }
+                auto layer = findLayer(m_map, "cake");
 
-                        case 2: {
-                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {476, 301 - 9}, WHITE);
-                            break;
-                        }
+                if (layer && layer->visible) {
+                    for (int i = 0; i < m_collectedCandles; i++) {
+                        // SYKA CHTO DELAET ETOT TIP?!
+                        switch(i) {
+                            case 0: {
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {474, 299 - 9}, WHITE);
+                                break;
+                            }
 
-                        case 3: {
-                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {481, 301 - 9}, WHITE);
-                            break;
-                        }
+                            case 1: {
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {483, 299 - 9}, WHITE);
+                                break;
+                            }
 
-                        case 4: {
-                            DrawTextureRec(m_candle, {7, 3, 1, 9}, {478, 300 - 9}, WHITE);
-                            break;
+                            case 2: {
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {476, 301 - 9}, WHITE);
+                                break;
+                            }
+
+                            case 3: {
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {481, 301 - 9}, WHITE);
+                                break;
+                            }
+
+                            case 4: {
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {478, 300 - 9}, WHITE);
+                                break;
+                            }
                         }
                     }
                 }
-                
+                    
                 for (auto pl : players) pl->draw();
                 DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
@@ -635,6 +641,22 @@ bool Game::checkInteracts() {
                 m_damageCooldown = 3 * 60;
                 m_hp -= prop.intValue;
                 printf("damage! \n");
+                break;
+            }
+
+            if (strcmp(prop.name, "cake") == 0 && m_username == "jaan" && m_collectedCandles == 6) {
+                if (prop.boolValue) {
+                    m_player->tookCake();
+                    auto layer = findLayer(m_map, "cake");
+
+                    if (layer) layer->visible = false;
+                } else {
+                    m_player->placeCake();
+                    auto layer = findLayer(m_map, "cake");
+
+                    if (layer) layer->visible = true;
+                }
+                
                 break;
             }
         }
