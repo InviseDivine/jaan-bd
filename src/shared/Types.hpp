@@ -57,7 +57,6 @@ struct UpdateRemotePlayerPacket {
 struct SendMessagePacket {
     Header header = Header::SEND_MESSAGE;
     char message[1024] = { 0 };
-    uint16_t messageSize;
 };
 
 struct ChangeMapPacket {

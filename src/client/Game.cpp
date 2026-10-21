@@ -71,7 +71,7 @@ void Game::run() {
     SetTargetFPS(60);
     InitAudioDevice();
 
-    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!.,()[]{}?/\\|-+=";
+    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!.,()[]{}?/\\|-+=<>";
     int len = 0;
     int* codepoints = LoadCodepoints(codepointsText.c_str(), &len);
 
@@ -192,7 +192,7 @@ void Game::run() {
 
         if (IsKeyPressed(KEY_T) && m_showPlayers && !m_showChat) m_showChat ^= 1;
 
-        if (IsKeyPressed(KEY_R) && m_username != "jaan") {
+        if (!m_showChat && IsKeyPressed(KEY_R) && m_username != "jaan") {
             changeMap("end");
         }
 

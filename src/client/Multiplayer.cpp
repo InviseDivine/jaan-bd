@@ -164,7 +164,6 @@ void Multiplayer::mapChanged(std::string const& to) {
 
 void Multiplayer::sendMessage(std::string message) {
     SendMessagePacket packet;
-    packet.messageSize = message.size();
     memcpy(packet.message, message.data(), message.size());
     sendPacket((char*)&packet, sizeof(packet));
 }

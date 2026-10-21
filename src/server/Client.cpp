@@ -35,9 +35,11 @@ void Client::packetReceived(ENetPacket* packet) {
 
             SendMessagePacket broadcastMessage;
 
-            std::copy(message.begin(), message.begin() + pack->messageSize, broadcastMessage.message);
+            std::copy(message.begin(), message.end(), broadcastMessage.message);
+
+            printf("msg %s\n", broadcastMessage.message);
             
-            srv.broadcast((char*)&broadcastMessage, sizeof(broadcastMessage), this);
+            srv.broadcast((char*)&broadcastMessage, sizeof(broadcastMessage));
 
             break;
         }
