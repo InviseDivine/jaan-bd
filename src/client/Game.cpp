@@ -167,6 +167,7 @@ void Game::changeMap(std::string const& name, std::string spawnpoint = "spawnpoi
 
     auto& mult = Multiplayer::get();
     mult.mapChanged(name);
+    m_currMap = name;
 }
 
 void Game::run() {
@@ -365,6 +366,11 @@ void Game::run() {
             }
         }
 
+        if (!danilkaShow && m_collectedCandles > 0) {
+            findLayer(m_maps["untitled"], "danilka")->visible = false;
+            danilkaShow = true;
+        } 
+
         AnimateTMX(m_map);
 
         BeginDrawing();
@@ -373,33 +379,37 @@ void Game::run() {
                 DrawTMX(m_map, &cam, nullptr, 0, 0, WHITE);
 
                 auto layer = findLayer(m_map, "cake");
-
-                if (layer && layer->visible) {
+                if (strcmp(m_map->fileName, "end.tmx") == 0 && layer && layer->visible) {
                     for (int i = 0; i < m_collectedCandles; i++) {
                         // SYKA CHTO DELAET ETOT TIP?!
                         switch(i) {
                             case 0: {
-                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {474, 299 - 9}, WHITE);
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {250, 168 - 9}, WHITE);
                                 break;
                             }
 
                             case 1: {
-                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {483, 299 - 9}, WHITE);
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {249, 171 - 9}, WHITE);
                                 break;
                             }
 
                             case 2: {
-                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {476, 301 - 9}, WHITE);
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {250, 175 - 9}, WHITE);
                                 break;
                             }
 
                             case 3: {
-                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {481, 301 - 9}, WHITE);
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {258, 168 - 9}, WHITE);
                                 break;
                             }
 
                             case 4: {
-                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {478, 300 - 9}, WHITE);
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {259, 171 - 9}, WHITE);
+                                break;
+                            }
+
+                            case 5: {
+                                DrawTextureRec(m_candle, {7, 3, 1, 9}, {258, 175 - 9}, WHITE);
                                 break;
                             }
                         }
@@ -407,7 +417,7 @@ void Game::run() {
                 }
                     
                 for (auto pl : players) pl->draw();
-                DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
+                // DrawRectangleLinesEx(m_player->getBounds(), 0.3f, RED);
             EndMode2D();
 
             if (m_reconnectingVisible) { // Connecting state
