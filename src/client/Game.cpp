@@ -15,6 +15,7 @@
 #include "rres.h"
 #define RRES_RAYLIB_IMPLEMENTATION
 #include "rres-raylib.h"
+#include "untitled.h"
 
 rresCentralDir dir;
 
@@ -27,10 +28,11 @@ const char* LoadTextFilePacked(const char* path) {
     int result = UnpackResourceChunk(&chunk);
 
     if (result == 0) {
-        unsigned int dataSize = 0;
-        const char* data = (const char*)LoadDataFromResource(chunk, &dataSize);
+        const char* data = (const char*)LoadTextFromResource(chunk);
         return data;
     }
+
+    rresUnloadResourceChunk(chunk);
 
     return nullptr;
 }
@@ -178,7 +180,7 @@ void Game::run() {
     SetGetFileTextCallbackTMX(LoadTextFilePacked);
     SetLoadTextureCallbackTMX(LoadTexturePacked);
 
-    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!.,()[]{}?/\\|-+=<>";
+    std::string codepointsText = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯяAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890?!.,()[]{}?/\\|-+=<>:;";
     int len = 0;
     int* codepoints = LoadCodepoints(codepointsText.c_str(), &len);
 
@@ -433,6 +435,8 @@ void Game::run() {
 
                 static float index = 0;
                 if (m_currentPos < m_dialogMessage[m_currentMessage].length()) {
+                    // int size = 0;
+                    // int cp = GetCodepointNext(m_dialogMessage[m_currentMessage].data() + m_currentPos, &size);
                     m_currentPos++;
 
                     if (!m_currentNote.empty() && m_currentPos % 4 == 0) {
