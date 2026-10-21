@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="32" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="31">
  <properties>
+  <property name="spawnpoint" value="spawnpoint7"/>
   <property name="zoom" type="float" value="10"/>
  </properties>
  <tileset firstgid="1" name="lava" tilewidth="16" tileheight="16" tilecount="1" columns="1">
@@ -151,6 +152,7 @@
   </object>
   <object id="29" x="0" y="127.995" width="13.9091" height="31.9141">
    <properties>
+    <property name="spawnpoint" value="spawnpoint7"/>
     <property name="transition" value="untitled"/>
    </properties>
   </object>

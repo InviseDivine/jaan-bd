@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="25" nextobjectid="35">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="25" nextobjectid="36">
  <properties>
   <property name="background_music" value="stardewvibes.mp3"/>
   <property name="zoom" type="float" value="5"/>
@@ -500,6 +500,9 @@
 После этого бери торт и иди наверх, мы будем ждать тебя там
 - Твои МГЕ братья</property>
    </properties>
+  </object>
+  <object id="35" name="spawnpoint7" x="471.125" y="487.5">
+   <point/>
   </object>
  </objectgroup>
  <layer id="23" name="cake" width="60" height="40">

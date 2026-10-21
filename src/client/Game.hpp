@@ -38,7 +38,7 @@ private:
 
     Font m_marksman;
     Texture2D m_candle;
-    int m_collectedCandles = 6;
+    int m_collectedCandles;
 
     std::string m_username;
 
